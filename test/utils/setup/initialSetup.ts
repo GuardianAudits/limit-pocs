@@ -203,7 +203,7 @@ export class InitialSetup {
             hre.props.token0.address,
             hre.props.token1.address,
             '10',
-            '177159557114295710296101716160'
+            '79287602951555555546117890672'
         )
         await createPoolTxn.wait()
 

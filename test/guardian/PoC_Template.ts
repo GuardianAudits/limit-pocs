@@ -72,6 +72,6 @@ describe('LimitPool Tests', function () {
         await mintSigners20(hre.props.token1, tokenAmountBn.mul(10), [hre.props.alice, hre.props.bob])
     })
 
-    it.only('PoC Here', async function () {})
+    it('PoC Here', async function () {})
 
 });
