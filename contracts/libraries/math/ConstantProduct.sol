@@ -265,6 +265,13 @@ library ConstantProduct {
         }
     }
 
+    function withinBounds(
+        uint160 price,
+        ILimitPoolStructs.Immutables memory constants
+    ) internal view returns (bool within) {
+        return price >= constants.bounds.min && price < constants.bounds.max;
+    }
+
     /// @notice Calculates the greatest tick value such that getRatioAtTick(tick) <= ratio.
     /// @param price The sqrt ratio for which to compute the tick as a Q64.96.
     /// @return tick The greatest tick for which the ratio is less than or equal to the input ratio.
