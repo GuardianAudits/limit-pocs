@@ -202,7 +202,7 @@ export class InitialSetup {
         let createPoolTxn = await hre.props.limitPoolFactory.createLimitPool(
             hre.props.token0.address,
             hre.props.token1.address,
-            '10',
+            '5',
             '177159557114295710296101716160'
         )
         await createPoolTxn.wait()
@@ -212,7 +212,7 @@ export class InitialSetup {
         let limitPoolAddress = await hre.props.limitPoolFactory.getLimitPool(
             hre.props.token0.address,
             hre.props.token1.address,
-            '10'
+            '5'
         )
         hre.props.limitPool = await hre.ethers.getContractAt('LimitPool', limitPoolAddress)
 
@@ -224,7 +224,7 @@ export class InitialSetup {
             [
                 hre.props.token0.address,
                 hre.props.token1.address,
-                '10'
+                '5'
             ]
         )
 

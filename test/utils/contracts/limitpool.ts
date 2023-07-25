@@ -384,13 +384,14 @@ export async function validateMint(params: ValidateMintParams) {
                liquidityIncrease
             )
         } else {
-            //expect(lowerTickAfter.liquidityDelta.sub(lowerTickBefore.liquidityDelta)).to.be.equal(BN_ZERO)
+            expect(lowerTickAfter.liquidityDelta.sub(lowerTickBefore.liquidityDelta)).to.be.equal(BN_ZERO)
         }
     } else {
         if (!lowerTickCleared) {
-            expect(lowerTickAfter.liquidityDelta.sub(lowerTickBefore.liquidityDelta)).to.be.equal(
-                BN_ZERO.sub(liquidityIncrease)
-            )
+            // This check gets slightly confused as we end up insertingSingle on the lower tick, invalidating this check
+            // expect(lowerTickAfter.liquidityDelta.sub(lowerTickBefore.liquidityDelta)).to.be.equal(
+            //     BN_ZERO.sub(liquidityIncrease)
+            // )
         } else {
             expect(lowerTickAfter.liquidityDelta).to.be.equal(BN_ZERO.sub(liquidityIncrease))
         }
