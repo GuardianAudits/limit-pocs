@@ -60,6 +60,12 @@ library Positions {
         {
             cache.priceLimit = params.zeroForOne ? ConstantProduct.getNewPrice(cache.priceUpper, cache.liquidityMinted, params.amount / 2, true, true)
                                                  : ConstantProduct.getNewPrice(cache.priceLower, cache.liquidityMinted, params.amount / 2, false, true);
+            // If no swap will occur, resize to the current market price
+            if (ConstantProduct.withinBounds(cache.swapPool.price, cache.constants) && (params.zeroForOne ?
+                    cache.priceLimit > cache.swapPool.price :
+                    cache.priceLimit < cache.swapPool.price)) {
+                cache.priceLimit = cache.swapPool.price;
+            }
             // get tick at price
             cache.tickLimit = ConstantProduct.getTickAtPrice(cache.priceLimit.toUint160(), cache.constants);
             // round to nearest tick spacing
