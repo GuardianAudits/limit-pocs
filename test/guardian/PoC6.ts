@@ -72,7 +72,7 @@ describe.only('LimitPool Tests', function () {
         await mintSigners20(hre.props.token1, tokenAmountBn.mul(10), [hre.props.alice, hre.props.bob])
     })
 
-    it.only("Can supply any claim tick", async () => {
+    it.only("Claiming a filled position with params.amount == 0 results in a null position that breaks the protocol", async () => {
         const bobLiquidity = BigNumber.from("40152271099188026073753");
         const aliceLiquidity = BigNumber.from('20051041647900280328782')
         const aliceLiquidity2 = BigNumber.from('19951041647900280328782')
