@@ -1,0 +1,36 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "CoverTicksErrors",
+  "sourceName": "contracts/utils/LimitPoolErrors.sol",
+  "abi": [
+    {
+      "inputs": [],
+      "name": "WrongTickClaimedAt",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "WrongTickLowerOrder",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "WrongTickLowerRange",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "WrongTickUpperOrder",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "WrongTickUpperRange",
+      "type": "error"
+    }
+  ],
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}

@@ -1,0 +1,16 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "CoverMiscErrors",
+  "sourceName": "contracts/utils/LimitPoolErrors.sol",
+  "abi": [
+    {
+      "inputs": [],
+      "name": "NotImplementedYet",
+      "type": "error"
+    }
+  ],
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}

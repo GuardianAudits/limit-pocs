@@ -12,6 +12,8 @@ import './TickMap.sol';
 import './EpochMap.sol';
 import './utils/SafeCast.sol';
 
+import "hardhat/console.sol";
+
 /// @notice Tick management library
 library Ticks {
     error LiquidityOverflow();
@@ -362,6 +364,14 @@ library Ticks {
         }
 
         // increment pool liquidity
+
+        console.log();
+        console.log("liquidityDelta before casting: ");
+        console.logInt(ticks[pool.tickAtPrice].liquidityDelta);
+        console.log();
+        console.log("liquidityDelta after casting: ");
+        console.log(uint128(ticks[pool.tickAtPrice].liquidityDelta));
+        console.log();
         pool.liquidity += uint128(ticks[pool.tickAtPrice].liquidityDelta);
         int24 tickToClear = pool.tickAtPrice;
         uint160 tickPriceAt = ticks[pool.tickAtPrice].priceAt;

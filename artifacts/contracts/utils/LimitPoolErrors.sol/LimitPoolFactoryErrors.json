@@ -1,0 +1,36 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "LimitPoolFactoryErrors",
+  "sourceName": "contracts/utils/LimitPoolErrors.sol",
+  "abi": [
+    {
+      "inputs": [],
+      "name": "FeeTierNotSupported",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "InvalidTokenAddress",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "OwnerOnly",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "PoolAlreadyExists",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "TickSpacingNotSupported",
+      "type": "error"
+    }
+  ],
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}

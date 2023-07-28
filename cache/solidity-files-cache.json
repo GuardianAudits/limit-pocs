@@ -1,0 +1,1936 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "/Users/0xkato/Desktop/Audits/limit-pocs/contracts/LimitPool.sol": {
+      "lastModificationDate": 1690521437119,
+      "contentHash": "088891d65b179bcbce1691c2f82c8e02",
+      "sourceName": "contracts/LimitPool.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./interfaces/ILimitPool.sol",
+        "./interfaces/ILimitPoolManager.sol",
+        "./base/storage/LimitPoolStorage.sol",
+        "./base/structs/LimitPoolFactoryStructs.sol",
+        "./utils/LimitPoolErrors.sol",
+        "./libraries/pool/SwapCall.sol",
+        "./libraries/pool/QuoteCall.sol",
+        "./libraries/pool/MintCall.sol",
+        "./libraries/pool/BurnCall.sol",
+        "./libraries/math/ConstantProduct.sol"
+      ],
+      "versionPragmas": [
+        "0.8.13"
+      ],
+      "artifacts": [
+        "LimitPool"
+      ]
+    },
+    "/Users/0xkato/Desktop/Audits/limit-pocs/contracts/base/structs/LimitPoolFactoryStructs.sol": {
+      "lastModificationDate": 1690521437120,
+      "contentHash": "20aa4276293a035e97af4584fd5ba8a7",
+      "sourceName": "contracts/base/structs/LimitPoolFactoryStructs.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.13"
+      ],
+      "artifacts": [
+        "LimitPoolFactoryStructs"
+      ]
+    },
+    "/Users/0xkato/Desktop/Audits/limit-pocs/contracts/interfaces/ILimitPoolManager.sol": {
+      "lastModificationDate": 1690521437120,
+      "contentHash": "2430ea3309cb4336b9c60f4efbb554eb",
+      "sourceName": "contracts/interfaces/ILimitPoolManager.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.13"
+      ],
+      "artifacts": [
+        "ILimitPoolManager"
+      ]
+    },
+    "/Users/0xkato/Desktop/Audits/limit-pocs/contracts/utils/LimitPoolErrors.sol": {
+      "lastModificationDate": 1690521437124,
+      "contentHash": "89d4d652e4d4afd4e1ea3067aa1c1be4",
+      "sourceName": "contracts/utils/LimitPoolErrors.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.13"
+      ],
+      "artifacts": [
+        "CoverMiscErrors",
+        "CoverPositionErrors",
+        "CoverTicksErrors",
+        "CoverTransferErrors",
+        "LimitPoolErrors",
+        "LimitPoolFactoryErrors"
+      ]
+    },
+    "/Users/0xkato/Desktop/Audits/limit-pocs/contracts/interfaces/ILimitPool.sol": {
+      "lastModificationDate": 1690521437120,
+      "contentHash": "e09db0cd9c81e17268b14d00a912463c",
+      "sourceName": "contracts/interfaces/ILimitPool.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./ILimitPoolStructs.sol"
+      ],
+      "versionPragmas": [
+        "0.8.13"
+      ],
+      "artifacts": [
+        "ILimitPool"
+      ]
+    },
+    "/Users/0xkato/Desktop/Audits/limit-pocs/contracts/libraries/pool/SwapCall.sol": {
+      "lastModificationDate": 1690521437123,
+      "contentHash": "0bbb951eccafe6a070aaf5d7dc8b2eaa",
+      "sourceName": "contracts/libraries/pool/SwapCall.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../../interfaces/ILimitPoolStructs.sol",
+        "../../interfaces/callbacks/IPoolsharkSwapCallback.sol",
+        "../../interfaces/IERC20Minimal.sol",
+        "../Positions.sol",
+        "../Ticks.sol",
+        "../utils/Collect.sol",
+        "../utils/SafeTransfers.sol"
+      ],
+      "versionPragmas": [
+        "0.8.13"
+      ],
+      "artifacts": [
+        "SwapCall"
+      ]
+    },
+    "/Users/0xkato/Desktop/Audits/limit-pocs/contracts/libraries/pool/QuoteCall.sol": {
+      "lastModificationDate": 1690521437123,
+      "contentHash": "aca448cadd4d04ad07b14052ae378181",
+      "sourceName": "contracts/libraries/pool/QuoteCall.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../../interfaces/ILimitPoolStructs.sol",
+        "../Ticks.sol"
+      ],
+      "versionPragmas": [
+        "0.8.13"
+      ],
+      "artifacts": [
+        "QuoteCall"
+      ]
+    },
+    "/Users/0xkato/Desktop/Audits/limit-pocs/contracts/libraries/pool/MintCall.sol": {
+      "lastModificationDate": 1690521437123,
+      "contentHash": "4ab1682476669412df52537349ab4f1d",
+      "sourceName": "contracts/libraries/pool/MintCall.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../../interfaces/ILimitPoolStructs.sol",
+        "../Positions.sol",
+        "../utils/Collect.sol"
+      ],
+      "versionPragmas": [
+        "0.8.13"
+      ],
+      "artifacts": [
+        "MintCall"
+      ]
+    },
+    "/Users/0xkato/Desktop/Audits/limit-pocs/contracts/base/storage/LimitPoolStorage.sol": {
+      "lastModificationDate": 1690521437120,
+      "contentHash": "5c09ff2be7e93404844de67ce6538e48",
+      "sourceName": "contracts/base/storage/LimitPoolStorage.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../../interfaces/ILimitPoolStructs.sol",
+        "../../interfaces/ILimitPoolFactory.sol",
+        "../../utils/LimitPoolErrors.sol"
+      ],
+      "versionPragmas": [
+        "0.8.13"
+      ],
+      "artifacts": [
+        "LimitPoolStorage"
+      ]
+    },
+    "/Users/0xkato/Desktop/Audits/limit-pocs/contracts/libraries/pool/BurnCall.sol": {
+      "lastModificationDate": 1690521437123,
+      "contentHash": "d6cebde10831ae442836827f471cb635",
+      "sourceName": "contracts/libraries/pool/BurnCall.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../../interfaces/ILimitPoolStructs.sol",
+        "../Positions.sol",
+        "../utils/Collect.sol"
+      ],
+      "versionPragmas": [
+        "0.8.13"
+      ],
+      "artifacts": [
+        "BurnCall"
+      ]
+    },
+    "/Users/0xkato/Desktop/Audits/limit-pocs/contracts/libraries/math/ConstantProduct.sol": {
+      "lastModificationDate": 1690521437122,
+      "contentHash": "b818b7752ecc412d9d38c739a01b7230",
+      "sourceName": "contracts/libraries/math/ConstantProduct.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./constant-product/DyDxMath.sol",
+        "./constant-product/TickMath.sol"
+      ],
+      "versionPragmas": [
+        "0.8.13"
+      ],
+      "artifacts": [
+        "ConstantProduct"
+      ]
+    },
+    "/Users/0xkato/Desktop/Audits/limit-pocs/contracts/interfaces/ILimitPoolStructs.sol": {
+      "lastModificationDate": 1690521437120,
+      "contentHash": "1702e80af029c04fa2876575b1eb0883",
+      "sourceName": "contracts/interfaces/ILimitPoolStructs.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./modules/curves/ICurveMath.sol",
+        "./modules/sources/ITwapSource.sol"
+      ],
+      "versionPragmas": [
+        "0.8.13"
+      ],
+      "artifacts": [
+        "ILimitPoolStructs"
+      ]
+    },
+    "/Users/0xkato/Desktop/Audits/limit-pocs/contracts/interfaces/modules/curves/ICurveMath.sol": {
+      "lastModificationDate": 1690521437121,
+      "contentHash": "01c5306c74d727889ba7f1c966279b0b",
+      "sourceName": "contracts/interfaces/modules/curves/ICurveMath.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./IDyDxMath.sol",
+        "./ITickMath.sol"
+      ],
+      "versionPragmas": [
+        "0.8.13"
+      ],
+      "artifacts": [
+        "ICurveMath"
+      ]
+    },
+    "/Users/0xkato/Desktop/Audits/limit-pocs/contracts/interfaces/modules/sources/ITwapSource.sol": {
+      "lastModificationDate": 1690521437121,
+      "contentHash": "3241d45b94a966f5bd47acd585d30285",
+      "sourceName": "contracts/interfaces/modules/sources/ITwapSource.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../../ILimitPoolStructs.sol"
+      ],
+      "versionPragmas": [
+        "0.8.13"
+      ],
+      "artifacts": [
+        "ITwapSource"
+      ]
+    },
+    "/Users/0xkato/Desktop/Audits/limit-pocs/contracts/interfaces/modules/curves/ITickMath.sol": {
+      "lastModificationDate": 1690521437121,
+      "contentHash": "9ddab1cddf6a00f88afa0a823ddbc5c6",
+      "sourceName": "contracts/interfaces/modules/curves/ITickMath.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../../../interfaces/ILimitPoolStructs.sol",
+        "../../../base/structs/CurveMathStructs.sol"
+      ],
+      "versionPragmas": [
+        "0.8.13"
+      ],
+      "artifacts": [
+        "ITickMath"
+      ]
+    },
+    "/Users/0xkato/Desktop/Audits/limit-pocs/contracts/interfaces/modules/curves/IDyDxMath.sol": {
+      "lastModificationDate": 1690521437121,
+      "contentHash": "0fd1f3f71b13e02d9ffc83034ad0b15b",
+      "sourceName": "contracts/interfaces/modules/curves/IDyDxMath.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../../../interfaces/ILimitPoolStructs.sol",
+        "../../../base/structs/CurveMathStructs.sol"
+      ],
+      "versionPragmas": [
+        "0.8.13"
+      ],
+      "artifacts": [
+        "IDyDxMath"
+      ]
+    },
+    "/Users/0xkato/Desktop/Audits/limit-pocs/contracts/base/structs/CurveMathStructs.sol": {
+      "lastModificationDate": 1690521437120,
+      "contentHash": "08bc3ff504df9d8cd765486c077b66c6",
+      "sourceName": "contracts/base/structs/CurveMathStructs.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../../interfaces/modules/sources/ITwapSource.sol"
+      ],
+      "versionPragmas": [
+        "0.8.13"
+      ],
+      "artifacts": [
+        "CurveMathStructs"
+      ]
+    },
+    "/Users/0xkato/Desktop/Audits/limit-pocs/contracts/interfaces/callbacks/IPoolsharkSwapCallback.sol": {
+      "lastModificationDate": 1690521437121,
+      "contentHash": "a76108063c8fcf826c9894f08ab739c7",
+      "sourceName": "contracts/interfaces/callbacks/IPoolsharkSwapCallback.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.13"
+      ],
+      "artifacts": [
+        "IPoolsharkSwapCallback"
+      ]
+    },
+    "/Users/0xkato/Desktop/Audits/limit-pocs/contracts/interfaces/IERC20Minimal.sol": {
+      "lastModificationDate": 1690521437120,
+      "contentHash": "fe3a50e326671c7f45926fc58bf6ba10",
+      "sourceName": "contracts/interfaces/IERC20Minimal.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.13"
+      ],
+      "artifacts": [
+        "IERC20Minimal"
+      ]
+    },
+    "/Users/0xkato/Desktop/Audits/limit-pocs/contracts/libraries/Positions.sol": {
+      "lastModificationDate": 1690521437122,
+      "contentHash": "7eb028fa4280235e8bc1ad51c193bfd1",
+      "sourceName": "contracts/libraries/Positions.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../interfaces/modules/curves/ICurveMath.sol",
+        "./Ticks.sol",
+        "../interfaces/ILimitPoolStructs.sol",
+        "./math/OverflowMath.sol",
+        "../interfaces/modules/curves/ICurveMath.sol",
+        "./Claims.sol",
+        "./EpochMap.sol",
+        "./utils/SafeCast.sol",
+        "./pool/SwapCall.sol"
+      ],
+      "versionPragmas": [
+        "0.8.13"
+      ],
+      "artifacts": [
+        "Positions"
+      ]
+    },
+    "/Users/0xkato/Desktop/Audits/limit-pocs/contracts/libraries/utils/Collect.sol": {
+      "lastModificationDate": 1690521437123,
+      "contentHash": "7da0fcc8dd73dc84fe5dd49ed3e5b299",
+      "sourceName": "contracts/libraries/utils/Collect.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../../interfaces/ILimitPoolStructs.sol",
+        "../Positions.sol",
+        "../utils/SafeTransfers.sol"
+      ],
+      "versionPragmas": [
+        "0.8.13"
+      ],
+      "artifacts": [
+        "Collect"
+      ]
+    },
+    "/Users/0xkato/Desktop/Audits/limit-pocs/contracts/libraries/utils/SafeTransfers.sol": {
+      "lastModificationDate": 1690521437123,
+      "contentHash": "59d53faf2e0b28eca81378f5d33d3362",
+      "sourceName": "contracts/libraries/utils/SafeTransfers.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/token/ERC20/ERC20.sol"
+      ],
+      "versionPragmas": [
+        "0.8.13"
+      ],
+      "artifacts": [
+        "SafeTransfers"
+      ]
+    },
+    "/Users/0xkato/Desktop/Audits/limit-pocs/contracts/libraries/Ticks.sol": {
+      "lastModificationDate": 1690522056707,
+      "contentHash": "a0006665707727734e8f4ad5987b4f8f",
+      "sourceName": "contracts/libraries/Ticks.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../interfaces/ILimitPoolStructs.sol",
+        "../interfaces/ILimitPoolFactory.sol",
+        "../base/structs/LimitPoolFactoryStructs.sol",
+        "../interfaces/ILimitPool.sol",
+        "./math/ConstantProduct.sol",
+        "./Positions.sol",
+        "./math/OverflowMath.sol",
+        "./TickMap.sol",
+        "./EpochMap.sol",
+        "./utils/SafeCast.sol",
+        "hardhat/console.sol"
+      ],
+      "versionPragmas": [
+        "0.8.13"
+      ],
+      "artifacts": [
+        "Ticks"
+      ]
+    },
+    "/Users/0xkato/Desktop/Audits/limit-pocs/contracts/libraries/math/OverflowMath.sol": {
+      "lastModificationDate": 1690521437122,
+      "contentHash": "fc4ec7f4a75870262d27502d5814f6c8",
+      "sourceName": "contracts/libraries/math/OverflowMath.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.13"
+      ],
+      "artifacts": [
+        "OverflowMath"
+      ]
+    },
+    "/Users/0xkato/Desktop/Audits/limit-pocs/contracts/libraries/EpochMap.sol": {
+      "lastModificationDate": 1690521437121,
+      "contentHash": "2301ea5ce1e197e85cb7009a28dd3045",
+      "sourceName": "contracts/libraries/EpochMap.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./math/ConstantProduct.sol",
+        "../interfaces/ILimitPoolStructs.sol"
+      ],
+      "versionPragmas": [
+        "0.8.13"
+      ],
+      "artifacts": [
+        "EpochMap"
+      ]
+    },
+    "/Users/0xkato/Desktop/Audits/limit-pocs/contracts/libraries/Claims.sol": {
+      "lastModificationDate": 1690521437121,
+      "contentHash": "6c921cd501710d31cdec9979abadb71e",
+      "sourceName": "contracts/libraries/Claims.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../interfaces/ILimitPoolStructs.sol",
+        "../interfaces/modules/curves/ICurveMath.sol",
+        "./EpochMap.sol",
+        "./TickMap.sol",
+        "./utils/String.sol",
+        "./utils/SafeCast.sol"
+      ],
+      "versionPragmas": [
+        "0.8.13"
+      ],
+      "artifacts": [
+        "Claims"
+      ]
+    },
+    "/Users/0xkato/Desktop/Audits/limit-pocs/contracts/libraries/utils/SafeCast.sol": {
+      "lastModificationDate": 1690521437123,
+      "contentHash": "b94ed0545785320723034cdb557b4b6e",
+      "sourceName": "contracts/libraries/utils/SafeCast.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.13"
+      ],
+      "artifacts": [
+        "SafeCast"
+      ]
+    },
+    "/Users/0xkato/Desktop/Audits/limit-pocs/contracts/interfaces/ILimitPoolFactory.sol": {
+      "lastModificationDate": 1690521437120,
+      "contentHash": "725cf3064bbcab94883894f3e94c27e2",
+      "sourceName": "contracts/interfaces/ILimitPoolFactory.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../base/storage/LimitPoolFactoryStorage.sol"
+      ],
+      "versionPragmas": [
+        "0.8.13"
+      ],
+      "artifacts": [
+        "ILimitPoolFactory"
+      ]
+    },
+    "/Users/0xkato/Desktop/Audits/limit-pocs/contracts/libraries/TickMap.sol": {
+      "lastModificationDate": 1690521437122,
+      "contentHash": "60c616f73d9d95cd0918f876e3da3d8e",
+      "sourceName": "contracts/libraries/TickMap.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./math/ConstantProduct.sol",
+        "../interfaces/ILimitPool.sol",
+        "../interfaces/ILimitPoolStructs.sol"
+      ],
+      "versionPragmas": [
+        "0.8.13"
+      ],
+      "artifacts": [
+        "TickMap"
+      ]
+    },
+    "/Users/0xkato/Desktop/Audits/limit-pocs/node_modules/hardhat/console.sol": {
+      "lastModificationDate": 1690522010239,
+      "contentHash": "e2884fb4e1ef4b4a7c7ac3a227880b0f",
+      "sourceName": "hardhat/console.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">= 0.4.22 <0.9.0"
+      ],
+      "artifacts": [
+        "console"
+      ]
+    },
+    "/Users/0xkato/Desktop/Audits/limit-pocs/contracts/base/storage/LimitPoolFactoryStorage.sol": {
+      "lastModificationDate": 1690521437120,
+      "contentHash": "d06b5521b08131794646aabc1b2c0d41",
+      "sourceName": "contracts/base/storage/LimitPoolFactoryStorage.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.13"
+      ],
+      "artifacts": [
+        "LimitPoolFactoryStorage"
+      ]
+    },
+    "/Users/0xkato/Desktop/Audits/limit-pocs/contracts/libraries/math/constant-product/TickMath.sol": {
+      "lastModificationDate": 1690521437123,
+      "contentHash": "7a9586052e06c50d18308c1c5baed8a3",
+      "sourceName": "contracts/libraries/math/constant-product/TickMath.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../../../interfaces/modules/curves/ITickMath.sol",
+        "../../../libraries/math/OverflowMath.sol"
+      ],
+      "versionPragmas": [
+        "0.8.13"
+      ],
+      "artifacts": [
+        "TickMath"
+      ]
+    },
+    "/Users/0xkato/Desktop/Audits/limit-pocs/contracts/libraries/math/constant-product/DyDxMath.sol": {
+      "lastModificationDate": 1690521437122,
+      "contentHash": "10f329008dc5996321f742eab722fe73",
+      "sourceName": "contracts/libraries/math/constant-product/DyDxMath.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../../../interfaces/modules/curves/IDyDxMath.sol",
+        "../../../libraries/math/OverflowMath.sol"
+      ],
+      "versionPragmas": [
+        "0.8.13"
+      ],
+      "artifacts": [
+        "DyDxMath"
+      ]
+    },
+    "/Users/0xkato/Desktop/Audits/limit-pocs/contracts/libraries/utils/String.sol": {
+      "lastModificationDate": 1690521437123,
+      "contentHash": "dca674170210eb3cec22848d76c2051b",
+      "sourceName": "contracts/libraries/utils/String.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.13"
+      ],
+      "artifacts": [
+        "String"
+      ]
+    },
+    "/Users/0xkato/Desktop/Audits/limit-pocs/node_modules/@openzeppelin/contracts/token/ERC20/ERC20.sol": {
+      "lastModificationDate": 1690522013320,
+      "contentHash": "3ae5166c6827a9cf1a7a462d1632b464",
+      "sourceName": "@openzeppelin/contracts/token/ERC20/ERC20.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./IERC20.sol",
+        "./extensions/IERC20Metadata.sol",
+        "../../utils/Context.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "ERC20"
+      ]
+    },
+    "/Users/0xkato/Desktop/Audits/limit-pocs/node_modules/@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol": {
+      "lastModificationDate": 1690522014286,
+      "contentHash": "909ab67fc5c25033fe6cd364f8c056f9",
+      "sourceName": "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../IERC20.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IERC20Metadata"
+      ]
+    },
+    "/Users/0xkato/Desktop/Audits/limit-pocs/node_modules/@openzeppelin/contracts/utils/Context.sol": {
+      "lastModificationDate": 1690522011059,
+      "contentHash": "5f2c5c4b6af2dd4551027144797bc8be",
+      "sourceName": "@openzeppelin/contracts/utils/Context.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "Context"
+      ]
+    },
+    "/Users/0xkato/Desktop/Audits/limit-pocs/node_modules/@openzeppelin/contracts/token/ERC20/IERC20.sol": {
+      "lastModificationDate": 1690522013319,
+      "contentHash": "df36f7051335cd1e748b1b6463b7fdd3",
+      "sourceName": "@openzeppelin/contracts/token/ERC20/IERC20.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IERC20"
+      ]
+    },
+    "/Users/0xkato/Desktop/Audits/limit-pocs/contracts/LimitPoolFactory.sol": {
+      "lastModificationDate": 1690521437119,
+      "contentHash": "fa2bb5abd8205c784ce46160dfa92696",
+      "sourceName": "contracts/LimitPoolFactory.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./LimitPool.sol",
+        "./interfaces/ILimitPoolFactory.sol",
+        "./base/events/LimitPoolFactoryEvents.sol",
+        "./base/structs/LimitPoolFactoryStructs.sol",
+        "./utils/LimitPoolErrors.sol"
+      ],
+      "versionPragmas": [
+        "0.8.13"
+      ],
+      "artifacts": [
+        "LimitPoolFactory"
+      ]
+    },
+    "/Users/0xkato/Desktop/Audits/limit-pocs/contracts/base/events/LimitPoolFactoryEvents.sol": {
+      "lastModificationDate": 1690521437119,
+      "contentHash": "e9ad9f77c399d7e1b7a0ac11093ed98e",
+      "sourceName": "contracts/base/events/LimitPoolFactoryEvents.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.13"
+      ],
+      "artifacts": [
+        "LimitPoolFactoryEvents"
+      ]
+    },
+    "/Users/0xkato/Desktop/Audits/limit-pocs/contracts/utils/LimitPoolManager.sol": {
+      "lastModificationDate": 1690521437124,
+      "contentHash": "edcbe1d1ff7186fa722c203ed5a56395",
+      "sourceName": "contracts/utils/LimitPoolManager.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../interfaces/ILimitPool.sol",
+        "../interfaces/ILimitPoolFactory.sol",
+        "../interfaces/ILimitPoolManager.sol",
+        "../base/events/LimitPoolManagerEvents.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "LimitPoolManager"
+      ]
+    },
+    "/Users/0xkato/Desktop/Audits/limit-pocs/contracts/base/events/LimitPoolManagerEvents.sol": {
+      "lastModificationDate": 1690521437119,
+      "contentHash": "5cd3c7713422939a4a16bb4263011066",
+      "sourceName": "contracts/base/events/LimitPoolManagerEvents.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.13"
+      ],
+      "artifacts": [
+        "LimitPoolManagerEvents"
+      ]
+    },
+    "/Users/0xkato/Desktop/Audits/limit-pocs/contracts/utils/PoolRouter.sol": {
+      "lastModificationDate": 1690521437124,
+      "contentHash": "d3a68457a89484932ea32c1156674ba1",
+      "sourceName": "contracts/utils/PoolRouter.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../interfaces/IPool.sol",
+        "../interfaces/callbacks/IPoolsharkSwapCallback.sol",
+        "../libraries/utils/SafeTransfers.sol",
+        "../base/PoolsharkStructs.sol"
+      ],
+      "versionPragmas": [
+        "0.8.13"
+      ],
+      "artifacts": [
+        "PoolRouter"
+      ]
+    },
+    "/Users/0xkato/Desktop/Audits/limit-pocs/contracts/interfaces/IPool.sol": {
+      "lastModificationDate": 1690521437120,
+      "contentHash": "2baf309ab7b3c6fcc3ffcfcf8c430393",
+      "sourceName": "contracts/interfaces/IPool.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../base/PoolsharkStructs.sol"
+      ],
+      "versionPragmas": [
+        "0.8.13"
+      ],
+      "artifacts": [
+        "IPool"
+      ]
+    },
+    "/Users/0xkato/Desktop/Audits/limit-pocs/contracts/base/PoolsharkStructs.sol": {
+      "lastModificationDate": 1690521437119,
+      "contentHash": "93498809d073a93ec9ec5331f0cb0e5a",
+      "sourceName": "contracts/base/PoolsharkStructs.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.13"
+      ],
+      "artifacts": [
+        "PoolsharkStructs"
+      ]
+    },
+    "/Users/0xkato/Desktop/Audits/limit-pocs/node_modules/@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol": {
+      "lastModificationDate": 1690522014285,
+      "contentHash": "a1c7f80ae26f5b2d7d563475627fbf25",
+      "sourceName": "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../ERC20.sol",
+        "../../../utils/Context.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "ERC20Burnable"
+      ]
+    },
+    "/Users/0xkato/Desktop/Audits/limit-pocs/contracts/test/Token20.sol": {
+      "lastModificationDate": 1690521437124,
+      "contentHash": "724aeda124f1534edec846bc977ca04c",
+      "sourceName": "contracts/test/Token20.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/token/ERC20/ERC20.sol",
+        "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol"
+      ],
+      "versionPragmas": [
+        "0.8.13"
+      ],
+      "artifacts": [
+        "Token20"
+      ]
+    },
+    "/Users/0xkato/Desktop/Audits/limit-pocs/contracts/libraries/utils/SafeState.sol": {
+      "lastModificationDate": 1690521437123,
+      "contentHash": "22c7841e0ed0bb5181296c1f3ed93d5a",
+      "sourceName": "contracts/libraries/utils/SafeState.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../../interfaces/ILimitPoolStructs.sol",
+        "../../interfaces/IERC20Minimal.sol"
+      ],
+      "versionPragmas": [
+        "0.8.13"
+      ],
+      "artifacts": [
+        "Checks"
+      ]
+    },
+    "/Users/0xkato/Desktop/Audits/limit-pocs/contracts/base/modifiers/LimitPoolModifiers.sol": {
+      "lastModificationDate": 1690521437119,
+      "contentHash": "1079ff6d2b05fef70df218494b7575cd",
+      "sourceName": "contracts/base/modifiers/LimitPoolModifiers.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../storage/LimitPoolStorage.sol",
+        "../../libraries/Ticks.sol"
+      ],
+      "versionPragmas": [
+        "0.8.13"
+      ],
+      "artifacts": [
+        "LimitPoolModifiers"
+      ]
+    },
+    "/Users/0xkato/Desktop/Audits/limit-pocs/contracts/base/events/LimitPoolEvents.sol": {
+      "lastModificationDate": 1690521437119,
+      "contentHash": "a485813137561913584c5633b3711bbc",
+      "sourceName": "contracts/base/events/LimitPoolEvents.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.13"
+      ],
+      "artifacts": [
+        "LimitPoolEvents"
+      ]
+    },
+    "/Users/0xkato/Desktop/Audits/limit-pocs/contracts/utils/RebaseLibrary.sol": {
+      "lastModificationDate": 1690521437124,
+      "contentHash": "327e4335fada4d174b26979274f8d2a0",
+      "sourceName": "contracts/utils/RebaseLibrary.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.13"
+      ],
+      "artifacts": [
+        "RebaseLibrary"
+      ]
+    }
+  }
+}

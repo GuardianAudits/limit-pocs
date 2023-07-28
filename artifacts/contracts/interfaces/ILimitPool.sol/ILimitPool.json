@@ -1,0 +1,325 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "ILimitPool",
+  "sourceName": "contracts/interfaces/ILimitPool.sol",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint128",
+              "name": "burnPercent",
+              "type": "uint128"
+            },
+            {
+              "internalType": "int24",
+              "name": "lower",
+              "type": "int24"
+            },
+            {
+              "internalType": "int24",
+              "name": "claim",
+              "type": "int24"
+            },
+            {
+              "internalType": "int24",
+              "name": "upper",
+              "type": "int24"
+            },
+            {
+              "internalType": "bool",
+              "name": "zeroForOne",
+              "type": "bool"
+            }
+          ],
+          "internalType": "struct ILimitPoolStructs.BurnParams",
+          "name": "params",
+          "type": "tuple"
+        }
+      ],
+      "name": "burn",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint16",
+          "name": "syncFee",
+          "type": "uint16"
+        },
+        {
+          "internalType": "uint16",
+          "name": "fillFee",
+          "type": "uint16"
+        },
+        {
+          "internalType": "bool",
+          "name": "setFees",
+          "type": "bool"
+        }
+      ],
+      "name": "fees",
+      "outputs": [
+        {
+          "internalType": "uint128",
+          "name": "token0Fees",
+          "type": "uint128"
+        },
+        {
+          "internalType": "uint128",
+          "name": "token1Fees",
+          "type": "uint128"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "refundTo",
+              "type": "address"
+            },
+            {
+              "internalType": "uint128",
+              "name": "amount",
+              "type": "uint128"
+            },
+            {
+              "internalType": "uint96",
+              "name": "mintPercent",
+              "type": "uint96"
+            },
+            {
+              "internalType": "int24",
+              "name": "lower",
+              "type": "int24"
+            },
+            {
+              "internalType": "int24",
+              "name": "upper",
+              "type": "int24"
+            },
+            {
+              "internalType": "bool",
+              "name": "zeroForOne",
+              "type": "bool"
+            }
+          ],
+          "internalType": "struct ILimitPoolStructs.MintParams",
+          "name": "params",
+          "type": "tuple"
+        }
+      ],
+      "name": "mint",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint160",
+              "name": "priceLimit",
+              "type": "uint160"
+            },
+            {
+              "internalType": "uint128",
+              "name": "amount",
+              "type": "uint128"
+            },
+            {
+              "internalType": "bool",
+              "name": "exactIn",
+              "type": "bool"
+            },
+            {
+              "internalType": "bool",
+              "name": "zeroForOne",
+              "type": "bool"
+            }
+          ],
+          "internalType": "struct ILimitPoolStructs.QuoteParams",
+          "name": "params",
+          "type": "tuple"
+        }
+      ],
+      "name": "quote",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "inAmount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "outAmount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "priceAfter",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "owner",
+              "type": "address"
+            },
+            {
+              "internalType": "uint128",
+              "name": "burnPercent",
+              "type": "uint128"
+            },
+            {
+              "internalType": "int24",
+              "name": "lower",
+              "type": "int24"
+            },
+            {
+              "internalType": "int24",
+              "name": "upper",
+              "type": "int24"
+            },
+            {
+              "internalType": "int24",
+              "name": "claim",
+              "type": "int24"
+            },
+            {
+              "internalType": "bool",
+              "name": "zeroForOne",
+              "type": "bool"
+            }
+          ],
+          "internalType": "struct ILimitPoolStructs.SnapshotParams",
+          "name": "params",
+          "type": "tuple"
+        }
+      ],
+      "name": "snapshot",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint160",
+              "name": "claimPriceLast",
+              "type": "uint160"
+            },
+            {
+              "internalType": "uint128",
+              "name": "liquidity",
+              "type": "uint128"
+            },
+            {
+              "internalType": "uint128",
+              "name": "amountIn",
+              "type": "uint128"
+            },
+            {
+              "internalType": "uint128",
+              "name": "amountOut",
+              "type": "uint128"
+            },
+            {
+              "internalType": "uint32",
+              "name": "epochLast",
+              "type": "uint32"
+            }
+          ],
+          "internalType": "struct ILimitPoolStructs.Position",
+          "name": "",
+          "type": "tuple"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint160",
+              "name": "priceLimit",
+              "type": "uint160"
+            },
+            {
+              "internalType": "uint128",
+              "name": "amount",
+              "type": "uint128"
+            },
+            {
+              "internalType": "bool",
+              "name": "exactIn",
+              "type": "bool"
+            },
+            {
+              "internalType": "bool",
+              "name": "zeroForOne",
+              "type": "bool"
+            },
+            {
+              "internalType": "bytes",
+              "name": "callbackData",
+              "type": "bytes"
+            }
+          ],
+          "internalType": "struct ILimitPoolStructs.SwapParams",
+          "name": "params",
+          "type": "tuple"
+        }
+      ],
+      "name": "swap",
+      "outputs": [
+        {
+          "internalType": "int256",
+          "name": "amount0",
+          "type": "int256"
+        },
+        {
+          "internalType": "int256",
+          "name": "amount1",
+          "type": "int256"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}

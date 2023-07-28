@@ -1,0 +1,21 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "CoverPositionErrors",
+  "sourceName": "contracts/utils/LimitPoolErrors.sol",
+  "abi": [
+    {
+      "inputs": [],
+      "name": "InvalidClaimTick",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "NotEnoughPositionLiquidity",
+      "type": "error"
+    }
+  ],
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}
