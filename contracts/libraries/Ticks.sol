@@ -27,7 +27,8 @@ library Ticks {
     event Initialize(
         int24 minTick,
         int24 maxTick,
-        uint160 startPrice
+        uint160 startPrice,
+        int24 startTick
     );
 
     event Swap(
@@ -47,37 +48,39 @@ library Ticks {
         ILimitPoolStructs.PoolState storage pool0,
         ILimitPoolStructs.PoolState storage pool1,
         ILimitPoolStructs.GlobalState memory state,
-        LimitPoolFactoryStructs.LimitPoolParams memory params
-    ) internal returns (
+        ILimitPoolStructs.Immutables memory constants,
+        uint160 startPrice
+    ) external returns (
         ILimitPoolStructs.GlobalState memory
     ) {
+        // state should only be initialized once
+        if (pool0.price > 0) require (false, 'PoolAlreadyInitialized()');
+
         // initialize epoch
         pool0.swapEpoch = 1;
         pool1.swapEpoch = 1;
 
         // check price bounds
-        ILimitPoolStructs.Immutables memory constants;
-        (constants.bounds.min, constants.bounds.max) = ConstantProduct.priceBounds(params.tickSpacing);
-        if (params.startPrice < constants.bounds.min || params.startPrice >= constants.bounds.max) require(false, 'StartPriceInvalid()');
+        if (startPrice < constants.bounds.min || startPrice >= constants.bounds.max) require(false, 'StartPriceInvalid()');
 
         // initialize ticks
-        TickMap.set(tickMap, ConstantProduct.minTick(params.tickSpacing), params.tickSpacing);
-        TickMap.set(tickMap, ConstantProduct.maxTick(params.tickSpacing), params.tickSpacing);
+        TickMap.set(tickMap, ConstantProduct.minTick(constants.tickSpacing), constants.tickSpacing);
+        TickMap.set(tickMap, ConstantProduct.maxTick(constants.tickSpacing), constants.tickSpacing);
 
         // initialize price
-        pool0.price = params.startPrice;
-        pool1.price = params.startPrice;
+        pool0.price = startPrice;
+        pool1.price = startPrice;
 
-        constants.tickSpacing = params.tickSpacing;
-        int24 startTick = ConstantProduct.getTickAtPrice(params.startPrice, constants);
+        int24 startTick = ConstantProduct.getTickAtPrice(startPrice, constants);
         pool0.tickAtPrice = startTick;
         pool1.tickAtPrice = startTick;
 
         // emit event
         emit Initialize(
-            ConstantProduct.minTick(params.tickSpacing),
-            ConstantProduct.maxTick(params.tickSpacing),
-            pool0.price
+            ConstantProduct.minTick(constants.tickSpacing),
+            ConstantProduct.maxTick(constants.tickSpacing),
+            pool0.price,
+            pool0.tickAtPrice
         );
 
         return state;
@@ -346,14 +349,16 @@ library Ticks {
     {
         if (pool.liquidity > 0) return (cache, pool);
 
+        (int24 startTick,) = TickMap.roundHalf(pool.tickAtPrice, cache.constants, pool.price);
+
         if (zeroForOne) {
-            pool.tickAtPrice = TickMap.next(tickMap, pool.tickAtPrice, cache.constants.tickSpacing, true);
+            pool.tickAtPrice = TickMap.next(tickMap, startTick, cache.constants.tickSpacing, true);
             if (pool.tickAtPrice < ConstantProduct.maxTick(cache.constants.tickSpacing)) {
                 EpochMap.set(pool.tickAtPrice, pool.swapEpoch, tickMap, cache.constants);
             }
         } else {
             /// @dev - roundedUp true since liquidity could be equal to the current pool tickAtPrice
-            pool.tickAtPrice = TickMap.previous(tickMap, pool.tickAtPrice, cache.constants.tickSpacing, true);
+            pool.tickAtPrice = TickMap.previous(tickMap, startTick, cache.constants.tickSpacing, true);
             if (pool.tickAtPrice > ConstantProduct.minTick(cache.constants.tickSpacing)) {
                 EpochMap.set(pool.tickAtPrice, pool.swapEpoch, tickMap, cache.constants);
             }

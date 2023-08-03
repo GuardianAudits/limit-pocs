@@ -385,6 +385,8 @@ library Positions {
                               : params.claim == params.lower) {
             EchidnaAssertions.assertLiquidityGlobalUnderflows(pool.liquidityGlobal, cache.position.liquidity, "LGU-3");
             pool.liquidityGlobal -= cache.position.liquidity;
+            // set params.amount for BurnLimit event
+            params.amount = cache.position.liquidity;
             cache.position.liquidity = 0;
         }
         // clear out old position
