@@ -55,7 +55,7 @@ contract LimitPool is
 
     function initialize(
         uint160 startPrice
-    ) external override 
+    ) external override
         nonReentrant
         factoryOnly
         canoncialOnly
@@ -125,7 +125,7 @@ contract LimitPool is
             assembly {
                 sig := mload(add(data, 0x20))
             }
-            
+
             // SimulateMint error
             if (sig == hex"5cc1f67b") {
                 (, lower, upper, positionCreated) = abi.decode(abi.encodePacked(bytes28(0), data),(bytes32,int24,int24,bool));
@@ -140,7 +140,7 @@ contract LimitPool is
 
     function burn(
         BurnParams memory params
-    ) external override 
+    ) external override
         nonReentrant
         canoncialOnly
     {
@@ -153,8 +153,8 @@ contract LimitPool is
             pool: params.zeroForOne ? pool0 : pool1
         });
         cache = BurnCall.perform(
-            params, 
-            cache, 
+            params,
+            cache,
             tickMap,
             params.zeroForOne ? ticks0 : ticks1,
             params.zeroForOne ? positions0 : positions1
@@ -169,7 +169,7 @@ contract LimitPool is
 
     function getResizedTicksForBurn(
         BurnParams memory params
-    ) external lock returns (int24 lower, int24 upper, bool positionExists){
+    ) external nonReentrant returns (int24 lower, int24 upper, bool positionExists){
         if (params.to == address(0)) revert CollectToZeroAddress();
         BurnCache memory cache = BurnCache({
             state: globalState,
@@ -180,8 +180,8 @@ contract LimitPool is
         });
 
         try BurnCall.getResizedTicks(
-           params, 
-            cache, 
+           params,
+            cache,
             tickMap,
             params.zeroForOne ? ticks0 : ticks1,
             params.zeroForOne ? positions0 : positions1
@@ -201,7 +201,7 @@ contract LimitPool is
                 positionExists = false;
             }
 
-            
+
         }
 
     }
@@ -214,7 +214,7 @@ contract LimitPool is
     returns (
         int256,
         int256
-    ) 
+    )
     {
         SwapCache memory cache;
         cache.pool = params.zeroForOne ? pool1 : pool0;
@@ -250,7 +250,7 @@ contract LimitPool is
     }
 
     function snapshot(
-       SnapshotParams memory params 
+       SnapshotParams memory params
     ) external view override canoncialOnly returns (
         Position memory
     ) {
@@ -280,7 +280,7 @@ contract LimitPool is
     ) external override
         ownerOnly
         nonReentrant
-        canoncialOnly 
+        canoncialOnly
     returns (
         uint128 token0Fees,
         uint128 token1Fees

@@ -15,4 +15,12 @@ interface ILimitPoolManager {
     ) external view returns (
         bool
     );
+    function enableTickSpacing(int16 spacing) external;
+    function enableImplementation(
+        bytes32 poolType_,
+        address implementation_
+    ) external;
+    function setFactory(
+        address factory_
+    ) external;
 }

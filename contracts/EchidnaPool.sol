@@ -13,6 +13,8 @@ import './LimitPoolFactory.sol';
 import './test/Token20.sol';
 import '@openzeppelin/contracts/token/ERC20/ERC20.sol';
 import './libraries/utils/SafeTransfers.sol';
+import "./utils/LimitPoolManager.sol";
+import './interfaces/ILimitPoolManager.sol';
 
 
 // Fuzz LimitPool functionality
@@ -32,12 +34,13 @@ contract EchidnaPool {
     event LiquidityMinted(uint256 amount, uint256 tokenAmount, bool zeroForOne);
     event PositionCreated(bool isCreated);
 
-    LimitPoolFactory public factory;
-    address public implementation;
-    LimitPool public pool;
-    Token20 public tokenIn;
-    Token20 public tokenOut;
-    Position[] public positions;
+    LimitPoolFactory factory;
+    ILimitPoolManager manager;
+    address implementation;
+    LimitPool pool;
+    Token20 tokenIn;
+    Token20 tokenOut;
+    Position[] positions;
     int16 tickSpacing;
 
     struct LiquidityDeltaValues {
@@ -83,12 +86,17 @@ contract EchidnaPool {
         _;
     }
     constructor() {
-        implementation = address(new LimitPool());
-        factory = new LimitPoolFactory(msg.sender, implementation);
+        tickSpacing = 10;
+        bytes32 poolType = keccak256(abi.encode("type1"));
+        manager = new LimitPoolManager();
+        manager.enableTickSpacing(tickSpacing);
+        factory = new LimitPoolFactory(msg.sender);
+        implementation = address(new LimitPool(address(factory)));
+        manager.enableImplementation(poolType, implementation);
+        manager.setFactory(address(factory));
         tokenIn = new Token20("IN", "IN", 18);
         tokenOut = new Token20("OUT", "OUT", 18);
-        tickSpacing = 10;
-        pool =  LimitPool(factory.createLimitPool(address(tokenIn), address(tokenOut), tickSpacing, 79228162514264337593543950336));
+        pool =  LimitPool(factory.createLimitPool(poolType, address(tokenIn), address(tokenOut), tickSpacing, 79228162514264337593543950336));
     }
 
     function mint(uint128 amount, bool zeroForOne, int24 lower, int24 upper) public tickPreconditions(lower, upper) {
