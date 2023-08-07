@@ -40,11 +40,9 @@ library Claims {
                 if (pool.price <= cache.priceUpper) {
                     cache.priceClaim = pool.price;
                     params.claim = TickMap.roundBack(pool.tickAtPrice, constants, params.zeroForOne, cache.priceClaim);
-                    claimTickEpoch = pool.swapEpoch;
                 } else {
                     cache.priceClaim = cache.priceUpper;
                     params.claim = params.upper;
-                    cache.claimTick = ticks[params.upper];
                 }
                 claimTickEpoch = pool.swapEpoch;
             } else if (params.claim % constants.tickSpacing != 0) {
@@ -58,11 +56,9 @@ library Claims {
                 if (pool.price >= cache.priceLower) {
                     cache.priceClaim = pool.price;
                     params.claim = TickMap.roundBack(pool.tickAtPrice, constants, params.zeroForOne, cache.priceClaim);
-                    claimTickEpoch = pool.swapEpoch;
                 } else {
                     cache.priceClaim = cache.priceLower;
                     params.claim = params.lower;
-                    cache.claimTick = ticks[params.upper];
                 }
                 claimTickEpoch = pool.swapEpoch;
             } else if (params.claim % constants.tickSpacing != 0) {
@@ -91,7 +87,7 @@ library Claims {
             /// @dev - if the next tick was crossed after position creation, the claim tick is incorrect
             /// @dev - we can cycle to find the right claim tick for the user
             uint32 claimTickNextAccumEpoch = EpochMap.get(claimTickNext, tickMap, constants);
-            ///@dev - next swapEpoch should not be greater
+            /// @dev - next swapEpoch should not be greater
             if (claimTickNextAccumEpoch > cache.position.epochLast) {
                 require (false, 'WrongTickClaimedAt5()');
             }
@@ -113,8 +109,7 @@ library Claims {
             }
         }
 
-        // early return if no update and amount burned is 0
-        //TODO: after we've cycled through claim ticks and there are no position updates just revert - DONE
+        // revert if no update and amount burned is 0
         if (params.zeroForOne ? params.claim == params.lower
                               : params.claim == params.upper) {
             if (params.amount == 0)
