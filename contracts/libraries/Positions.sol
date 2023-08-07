@@ -316,20 +316,31 @@ library Positions {
         int24
     )
     {
-        ILimitPoolStructs.UpdateCache memory cache;
-        (
-            params,
-            cache,
-            state
-        ) = _deltas(
+        ILimitPoolStructs.UpdateCache memory cache = ILimitPoolStructs.UpdateCache({
+            position: positions[params.owner][params.lower][params.upper],
+            pool: pool,
+            priceLower: ConstantProduct.getPriceAtTick(params.lower, constants),
+            priceClaim: ConstantProduct.getPriceAtTick(params.claim, constants),
+            priceUpper: ConstantProduct.getPriceAtTick(params.upper, constants),
+            claimTick: ticks[params.claim],
+            removeLower: false,
+            removeUpper: false
+        });
+
+        params.amount = _convert(cache.position.liquidity, params.amount);
+
+        // check claim is valid
+        (params, cache) = Claims.validate(
             positions,
             ticks,
             tickMap,
-            state,
-            pool,
+            cache.pool,
             params,
+            cache,
             constants
         );
+        // calculate position deltas
+        cache = Claims.getDeltas(cache, params, constants);
 
         // update pool liquidity
         if (cache.priceClaim == pool.price && params.amount > 0) {
@@ -339,14 +350,13 @@ library Positions {
                 pool.liquidity -= params.amount;
         }
 
-
         if (params.amount > 0) {
             if (params.claim == (params.zeroForOne ? params.upper : params.lower)) {
                 // only remove once if final tick of position
                 cache.removeLower = false;
                 cache.removeUpper = false;
             } else {
-                params.zeroForOne ? cache.removeUpper = true 
+                params.zeroForOne ? cache.removeUpper = true
                                   : cache.removeLower = true;
             }
             if (params.zeroForOne) {
@@ -433,59 +443,6 @@ library Positions {
     ) external view returns (
         ILimitPoolStructs.Position memory
     ) {
-        ILimitPoolStructs.UpdateCache memory cache;
-        (
-            params,
-            cache,
-            state
-        ) = _deltas(
-            positions,
-            ticks,
-            tickMap,
-            state,
-            pool,
-            params,
-            constants
-        );
-
-        if (params.amount > 0) {
-            cache.position.liquidity -= uint128(params.amount);
-        }
-        
-        // clear position values if empty
-        if (cache.position.liquidity == 0) {
-            cache.position.epochLast = 0;
-            cache.position.crossedInto = false;
-        }    
-        return cache.position;
-    }
-
-    function _convert(
-        uint128 liquidity,
-        uint128 percent
-    ) internal pure returns (
-        uint128
-    ) {
-        // convert percentage to liquidity amount
-        if (percent > 1e38) percent = 1e38;
-        if (liquidity == 0 && percent > 0) require (false, 'PositionNotFound()');
-        return uint128(uint256(liquidity) * uint256(percent) / 1e38);
-    }
-
-    function _deltas(
-        mapping(address => mapping(int24 => mapping(int24 => ILimitPoolStructs.Position)))
-            storage positions,
-        mapping(int24 => ILimitPoolStructs.Tick) storage ticks,
-        ILimitPoolStructs.TickMap storage tickMap,
-        ILimitPoolStructs.GlobalState memory state,
-        ILimitPoolStructs.PoolState memory pool,
-        ILimitPoolStructs.UpdateParams memory params,
-        ILimitPoolStructs.Immutables memory constants
-    ) internal view returns (
-        ILimitPoolStructs.UpdateParams memory,
-        ILimitPoolStructs.UpdateCache memory,
-        ILimitPoolStructs.GlobalState memory
-    ) {
         ILimitPoolStructs.UpdateCache memory cache = ILimitPoolStructs.UpdateCache({
             position: positions[params.owner][params.lower][params.upper],
             pool: pool,
@@ -512,6 +469,27 @@ library Positions {
         // calculate position deltas
         cache = Claims.getDeltas(cache, params, constants);
 
-        return (params, cache, state);
+        if (params.amount > 0) {
+            cache.position.liquidity -= uint128(params.amount);
+        }
+        
+        // clear position values if empty
+        if (cache.position.liquidity == 0) {
+            cache.position.epochLast = 0;
+            cache.position.crossedInto = false;
+        }    
+        return cache.position;
+    }
+
+    function _convert(
+        uint128 liquidity,
+        uint128 percent
+    ) internal pure returns (
+        uint128
+    ) {
+        // convert percentage to liquidity amount
+        if (percent > 1e38) percent = 1e38;
+        if (liquidity == 0 && percent > 0) require (false, 'PositionNotFound()');
+        return uint128(uint256(liquidity) * uint256(percent) / 1e38);
     }
 }
