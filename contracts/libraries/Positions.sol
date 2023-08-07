@@ -331,9 +331,6 @@ library Positions {
             constants
         );
 
-        if (cache.earlyReturn)
-            return (state, pool, cache.position, params.claim);
-
         // update pool liquidity
         if (cache.priceClaim == pool.price && params.amount > 0) {
             // handle pool.price at edge of range
@@ -451,9 +448,6 @@ library Positions {
             constants
         );
 
-        if (cache.earlyReturn)
-            return (cache.position);
-
         if (params.amount > 0) {
             cache.position.liquidity -= uint128(params.amount);
         }
@@ -499,7 +493,6 @@ library Positions {
             priceClaim: ConstantProduct.getPriceAtTick(params.claim, constants),
             priceUpper: ConstantProduct.getPriceAtTick(params.upper, constants),
             claimTick: ticks[params.claim],
-            earlyReturn: false,
             removeLower: false,
             removeUpper: false
         });
@@ -516,9 +509,6 @@ library Positions {
             cache,
             constants
         );
-        if (cache.earlyReturn) {
-            return (params, cache, state);
-        }
         // calculate position deltas
         cache = Claims.getDeltas(cache, params, constants);
 

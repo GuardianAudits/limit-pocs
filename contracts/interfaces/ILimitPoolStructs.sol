@@ -153,7 +153,6 @@ interface ILimitPoolStructs {
         uint160 priceLower;
         uint160 priceClaim;
         uint160 priceUpper;
-        bool earlyReturn;
         bool removeLower;
         bool removeUpper;
     }
