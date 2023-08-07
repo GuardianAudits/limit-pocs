@@ -161,12 +161,17 @@ library Positions {
         ILimitPoolStructs.MintCache memory cache,
         mapping(int24 => ILimitPoolStructs.Tick) storage ticks,
         ILimitPoolStructs.TickMap storage tickMap,
-        ILimitPoolStructs.MintParams memory params
+        ILimitPoolStructs.MintParams memory params,
+        bool setLower,
+        bool setUpper
     ) internal returns (
         ILimitPoolStructs.PoolState memory,
         ILimitPoolStructs.Position memory
     ) {
         if (cache.liquidityMinted == 0) return (cache.pool, cache.position);
+        /// @auditor - validation of ticks is in Positions.validate
+        if (cache.liquidityMinted > (uint128(type(int128).max) - cache.pool.liquidityGlobal) )
+            require (false, 'LiquidityOverflow()');
 
         if (cache.position.liquidity == 0) {
             cache.position.epochLast = cache.pool.swapEpoch;
@@ -189,7 +194,9 @@ library Positions {
             ticks,
             tickMap,
             cache,
-            params
+            params,
+            setLower,
+            setUpper
         );
 
         // update liquidity global

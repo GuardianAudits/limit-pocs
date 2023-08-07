@@ -438,65 +438,54 @@ library Ticks {
         mapping(int24 => ILimitPoolStructs.Tick) storage ticks,
         ILimitPoolStructs.TickMap storage tickMap,
         ILimitPoolStructs.MintCache memory cache,
-        ILimitPoolStructs.MintParams memory params
+        ILimitPoolStructs.MintParams memory params,
+        bool setLower,
+        bool setUpper
     ) internal {
-        /// @auditor - validation of ticks is in Positions.validate
-        if (cache.liquidityMinted > (uint128(type(int128).max) - cache.pool.liquidityGlobal) )
-            require (false, 'LiquidityOverflow()');
-
-        int256 liquidityMinted = int256(cache.liquidityMinted);
+        int128 liquidityMinted = int128(int256(cache.liquidityMinted));
 
         // check if adding liquidity necessary
-        if (!params.zeroForOne || cache.priceLower > cache.pool.price) {
+        if (setLower) {
             // sets bit in map
             if(!TickMap.set(tickMap, params.lower, cache.constants.tickSpacing)){
-                // inherit epoch 
-                int24 tickAhead;
-                if (params.zeroForOne) {
-                    tickAhead  = TickMap.next(tickMap, params.lower, cache.constants.tickSpacing, false);
-                } else {
-                    tickAhead  = TickMap.previous(tickMap, params.lower, cache.constants.tickSpacing, false);
-                }
+                // inherit epoch
+                int24 tickAhead = getTickAhead(tickMap, params.lower, params.zeroForOne, cache.constants.tickSpacing);
                 uint32 epochAhead = EpochMap.get(tickAhead, tickMap, cache.constants);
                 EpochMap.set(params.lower, epochAhead, tickMap, cache.constants);
             }
             ILimitPoolStructs.Tick memory tickLower = ticks[params.lower];
             if (params.zeroForOne) {
-                tickLower.liquidityDelta += int128(liquidityMinted);
+                tickLower.liquidityDelta += liquidityMinted;
             } else {
-                tickLower.liquidityDelta -= int128(liquidityMinted);
+                tickLower.liquidityDelta -= liquidityMinted;
             }
             ticks[params.lower] = tickLower;
-        } else {
-            /// @dev - i.e. if zeroForOne && cache.priceLower <= cache.pool.price
-            cache.pool.swapEpoch += 1;
-            // mark epoch on undercut tick
-            EpochMap.set(params.lower, cache.pool.swapEpoch, tickMap, cache.constants);
         }
 
-        if (params.zeroForOne || cache.priceUpper < cache.pool.price) {
+        if (setUpper) {
             if(!TickMap.set(tickMap, params.upper, cache.constants.tickSpacing)) {
-                int24 tickAhead;
-                if (params.zeroForOne) {
-                    tickAhead  = TickMap.next(tickMap, params.upper, cache.constants.tickSpacing, false);
-                } else {
-                    tickAhead  = TickMap.previous(tickMap, params.upper, cache.constants.tickSpacing, false);
-                }
+                int24 tickAhead = getTickAhead(tickMap, params.upper, params.zeroForOne, cache.constants.tickSpacing);
                 uint32 epochAhead = EpochMap.get(tickAhead, tickMap, cache.constants);
                 EpochMap.set(params.upper, epochAhead, tickMap, cache.constants);
             }
             ILimitPoolStructs.Tick memory tickUpper = ticks[params.upper];
             if (params.zeroForOne) {
-                tickUpper.liquidityDelta -= int128(liquidityMinted);
+                tickUpper.liquidityDelta -= liquidityMinted;
             } else {
-                tickUpper.liquidityDelta += int128(liquidityMinted);
+                tickUpper.liquidityDelta += liquidityMinted;
             }
             ticks[params.upper] = tickUpper;
+        }
+    }
+
+    /**
+     * @dev Get the tick that is further along in the zeroForOne or !zeroForOne position.
+     */
+    function getTickAhead(ILimitPoolStructs.TickMap storage tickMap, int24 currentTick, bool zeroForOne, int16 tickSpacing) internal returns(int24 tickAhead) {
+        if (zeroForOne) {
+            tickAhead = TickMap.next(tickMap, currentTick, tickSpacing, false);
         } else {
-            /// @dev - i.e. if !zeroForOne && cache.priceUpper >= cache.pool.price
-            cache.pool.swapEpoch += 1;
-            // mark epoch on undercut tick
-            EpochMap.set(params.upper, cache.pool.swapEpoch, tickMap, cache.constants);
+            tickAhead = TickMap.previous(tickMap, currentTick, tickSpacing, false);
         }
     }
 

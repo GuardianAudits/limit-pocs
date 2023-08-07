@@ -72,10 +72,10 @@ library MintCall {
         // mint position if amount is left
         if (params.amount > 0 && params.lower < params.upper) {
             /// @auditor not sure if the lower >= upper case is possible
-
             if (params.zeroForOne) {
                 uint160 priceLower = ConstantProduct.getPriceAtTick(params.lower, cache.constants);
-                if (priceLower <= cache.pool.price) {
+                bool isUndercut = priceLower <= cache.pool.price;
+                if (isUndercut) {
                     // save liquidity if active
                     if (cache.pool.liquidity > 0) {
                         cache.pool = Ticks.insertSingle(params, ticks, tickMap, cache, cache.pool, cache.constants);
@@ -87,11 +87,23 @@ library MintCall {
                     cache.position.crossedInto = true;
                     // set epoch on start tick to signify position being crossed into
                     /// @auditor - this is safe assuming we have swapped at least this far on the other side
+                    cache.pool.swapEpoch += 1;
+                    // mark epoch on undercut tick
+                    EpochMap.set(params.lower, cache.pool.swapEpoch, tickMap, cache.constants);
                     emit Sync(cache.pool.price, cache.pool.liquidity);
                 }
+                (cache.pool, cache.position) = Positions.add(
+                    cache,
+                    ticks,
+                    tickMap,
+                    params,
+                    !isUndercut, // setLower
+                    true  // setUpper
+                );
             } else {
                 uint160 priceUpper = ConstantProduct.getPriceAtTick(params.upper, cache.constants);
-                if (priceUpper >= cache.pool.price) {
+                bool isUndercut = priceUpper >= cache.pool.price;
+                if (isUndercut) {
                     if (cache.pool.liquidity > 0) {
                         cache.pool = Ticks.insertSingle(params, ticks, tickMap, cache, cache.pool, cache.constants);
                     }
@@ -101,15 +113,20 @@ library MintCall {
                     cache.position.crossedInto = true;
                     // set epoch on start tick to signify position being crossed into
                     /// @auditor - this is safe assuming we have swapped at least this far on the other side
+                    cache.pool.swapEpoch += 1;
+                    // mark epoch on undercut tick
+                    EpochMap.set(params.upper, cache.pool.swapEpoch, tickMap, cache.constants);
                     emit Sync(cache.pool.price, cache.pool.liquidity);
                 }
+                (cache.pool, cache.position) = Positions.add(
+                    cache,
+                    ticks,
+                    tickMap,
+                    params,
+                    true, // setLower
+                    !isUndercut  // setUpper
+                );
             }
-            (cache.pool, cache.position) = Positions.add(
-                cache,
-                ticks,
-                tickMap,
-                params
-            );
             // save lp side for safe reentrancy
             save(cache.pool, pool);
 
