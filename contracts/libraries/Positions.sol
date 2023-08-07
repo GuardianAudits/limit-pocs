@@ -398,13 +398,6 @@ library Positions {
         // clear out old position
         if (params.zeroForOne ? params.claim != params.lower 
                               : params.claim != params.upper) {
-            
-            /// @dev - this also clears out position end claims
-            if (params.zeroForOne ? params.claim == params.lower 
-                                  : params.claim == params.upper) {
-                // subtract remaining position liquidity out from global
-                pool.liquidityGlobal -= cache.position.liquidity;
-            }
             delete positions[msg.sender][params.lower][params.upper];
         }
         // clear position if empty
