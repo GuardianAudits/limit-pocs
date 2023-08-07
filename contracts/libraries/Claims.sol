@@ -131,36 +131,32 @@ library Claims {
     ) internal pure returns (
         ILimitPoolStructs.UpdateCache memory
     ) {
-        // if half tick priceAt > 0 add amountOut to amountOutClaimed
-        // set claimPriceLast if zero
+        // set crossedInto if false
         if (!cache.position.crossedInto) {
             cache.position.crossedInto = true;
         }
         ILimitPoolStructs.GetDeltasLocals memory locals;
 
         if (params.claim % constants.tickSpacing != 0)
-        // this should pass price at the claim tick
             locals.previousFullTick = TickMap.roundBack(params.claim, constants, params.zeroForOne, ConstantProduct.getPriceAtTick(params.claim, constants));
         else
             locals.previousFullTick = params.claim;
         locals.pricePrevious = ConstantProduct.getPriceAtTick(locals.previousFullTick, constants);
         if (params.zeroForOne ? locals.previousFullTick > params.lower
                               : locals.previousFullTick < params.upper) {
-            
-            // claim amounts up to latest full tick crossed
+            // claim filled amount up to latest full tick crossed
             cache.position.amountIn += uint128(params.zeroForOne ? ConstantProduct.getDy(cache.position.liquidity, cache.priceLower, locals.pricePrevious, false)
                                                                  : ConstantProduct.getDx(cache.position.liquidity, locals.pricePrevious, cache.priceUpper, false));
         }
         if (params.amount > 0) {
-           // if tick hasn't been set back calculate amountIn
+            // if tick has been set back calculate additional amountIn filled amount
             if (params.zeroForOne ? cache.priceClaim > locals.pricePrevious
                                   : cache.priceClaim < locals.pricePrevious) {
                 // allow partial tick claim if removing liquidity
                 cache.position.amountIn += uint128(params.zeroForOne ? ConstantProduct.getDy(params.amount, locals.pricePrevious, cache.priceClaim, false)
                                                                      : ConstantProduct.getDx(params.amount, cache.priceClaim, locals.pricePrevious, false));
             }
-            // use priceClaim if tick hasn't been set back
-            // else use claimPriceLast to calculate amountOut
+            // removing unfilled amountOut position liquidity amount
             if (params.claim != (params.zeroForOne ? params.upper : params.lower)) {
                 cache.position.amountOut += uint128(params.zeroForOne ? ConstantProduct.getDx(params.amount, cache.priceClaim, cache.priceUpper, false)
                                                                       : ConstantProduct.getDy(params.amount, cache.priceLower, cache.priceClaim, false));
