@@ -72,66 +72,65 @@ describe('LimitPool Tests', function () {
         await mintSigners20(hre.props.token1, tokenAmountBn.mul(5), [hre.props.alice, hre.props.bob])
     })
 
-it.only("Echidna Mint No Liquidity", async function () {
+    it.only("Position Minted With 0 Liquidity", async function () {
 
-    await validateMint({
-        signer: hre.props.bob,
-        recipient: hre.props.bob.address,
-        lower: '120',
-        upper: '510',
-        amount: BigNumber.from('847'),
-        zeroForOne: true,
-        balanceInDecrease: BigNumber.from('847'),
-        liquidityIncrease: "44126",
-        balanceOutIncrease: "0",
-        upperTickCleared: false,
-        lowerTickCleared: true,
-        revertMessage: '',
-    })
+        await validateMint({
+            signer: hre.props.bob,
+            recipient: hre.props.bob.address,
+            lower: '120',
+            upper: '510',
+            amount: BigNumber.from('847'),
+            zeroForOne: true,
+            balanceInDecrease: BigNumber.from('847'),
+            liquidityIncrease: "44126",
+            balanceOutIncrease: "0",
+            upperTickCleared: false,
+            lowerTickCleared: true,
+            revertMessage: '',
+        })
 
-    console.log("Mint #1 Completed");
-    console.log();
+        console.log("Mint #1 Completed");
+        console.log();
 
+        await validateMint({
+            signer: hre.props.bob,
+            recipient: hre.props.bob.address,
+            lower: '90',
+            upper: '510',
+            amount: BigNumber.from('545'),
+            zeroForOne: false,
+            balanceInDecrease: BigNumber.from('545'),
+            liquidityIncrease: "0",
+            balanceInIncrease: "25000000000000000000",
+            balanceOutIncrease: "392",
+            upperTickCleared: true,
+            lowerTickCleared: false,
+            revertMessage: '',
+        })
 
-    await validateMint({
-        signer: hre.props.bob,
-        recipient: hre.props.bob.address,
-        lower: '90',
-        upper: '510',
-        amount: BigNumber.from('545'),
-        zeroForOne: false,
-        balanceInDecrease: BigNumber.from('545'),
-        liquidityIncrease: "0",
-        balanceInIncrease: "25000000000000000000",
-        balanceOutIncrease: "392",
-        upperTickCleared: true,
-        lowerTickCleared: true,
-        revertMessage: '',
-    })
+        console.log("Mint #2 Completed");
+        console.log();
 
-    console.log("Mint #2 Completed");
-    console.log();
+        await validateMint({
+            signer: hre.props.bob,
+            recipient: hre.props.bob.address,
+            lower: '-90',
+            upper: '117730',
+            amount: BigNumber.from('526'),
+            zeroForOne: false,
+            balanceInDecrease: BigNumber.from('526'),
+            liquidityIncrease: "0",
+            balanceInIncrease: "0",
+            balanceOutIncrease: "454",
+            upperTickCleared: true,
+            lowerTickCleared: false,
+            revertMessage: '',
+        })
 
-    await validateMint({
-        signer: hre.props.bob,
-        recipient: hre.props.bob.address,
-        lower: '-90',
-        upper: '117730',
-        amount: BigNumber.from('526'),
-        zeroForOne: false,
-        balanceInDecrease: BigNumber.from('526'),
-        liquidityIncrease: "0",
-        balanceInIncrease: "0",
-        balanceOutIncrease: "454",
-        upperTickCleared: true,
-        lowerTickCleared: false,
-        revertMessage: '',
-    })
+        console.log("Mint #3 Completed");
+        console.log();
 
-    console.log("Mint #3 Completed");
-    console.log();
-    
-    expect(await getLiquidity(false, true)).eq("0");
-    expect(await getLiquidity(true, true)).eq("0");
-  });
+        expect(await getLiquidity(false, true)).eq("0");
+        expect(await getLiquidity(true, true)).eq("0");
+    });
 });

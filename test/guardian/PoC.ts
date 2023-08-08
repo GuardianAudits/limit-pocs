@@ -73,7 +73,7 @@ describe('LimitPool Tests', function () {
         await mintSigners20(hre.props.token1, tokenAmountBn.mul(10), [hre.props.alice, hre.props.bob])
     })
 
-    it.only("overriding position when burning to the same lower/upper", async function () {
+    it("overriding position when burning to the same lower/upper", async function () {
         const aliceLiquidity = BigNumber.from("20051041647900280328782")
 
         // Mint a position

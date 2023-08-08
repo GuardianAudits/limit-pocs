@@ -53,7 +53,7 @@ library Positions {
             params.zeroForOne ? 0 : uint256(params.amount),
             params.zeroForOne ? uint256(params.amount) : 0
         );
-
+        console.log("cache.liquidityMinted before: ", cache.liquidityMinted);
         if (cache.liquidityMinted == 0) require (false, 'PositionLiquidityZero()');
         // calculate price limit by using half of input
         {
@@ -148,6 +148,8 @@ library Positions {
                 cache.liquidityMinted = 0;
             cache.pool.swapEpoch += 1;
         }
+        console.log("cache.liquidityMinted after: ", cache.liquidityMinted);
+
         // save swapCache
         cache.swapCache = swapCache;
 
