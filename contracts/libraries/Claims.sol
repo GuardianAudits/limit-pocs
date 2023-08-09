@@ -95,6 +95,12 @@ library Claims {
             if (claimTickNextAccumEpoch > cache.position.epochLast) {
                 require (false, 'WrongTickClaimedAt5()');
             }
+            // Below is the check to add to disallow maliciously claiming at the current pool price
+            // Even when the end tick has been unset.
+//            uint32 endTickAccumEpoch = EpochMap.get(params.zeroForOne ? params.upper : params.lower, tickMap, constants);
+//            if (claimTickNextAccumEpoch > cache.position.epochLast) {
+//                require (false, 'WrongTickClaimedAt5()');
+//            }
         }
         /// @dev - start tick does not overwrite position and final tick clears position
         if (params.claim != params.upper && params.claim != params.lower) {
