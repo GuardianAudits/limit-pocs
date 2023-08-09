@@ -38,11 +38,11 @@ describe('LimitPool Tests', function () {
     const maxTickIdx = BigNumber.from('887272')
 
     ////////// DEBUG FLAGS //////////
-    let debugMode           = false
-    let balanceCheck        = false
+    let debugMode = false
+    let balanceCheck = false
     let deltaMaxBeforeCheck = false
-    let deltaMaxAfterCheck  = false
-    let latestTickCheck     = false
+    let deltaMaxAfterCheck = false
+    let latestTickCheck = false
 
     //every test should clear out all liquidity
 
@@ -71,28 +71,92 @@ describe('LimitPool Tests', function () {
         await mintSigners20(hre.props.token0, tokenAmountBn.mul(10), [hre.props.alice, hre.props.bob])
 
         await mintSigners20(hre.props.token1, tokenAmountBn.mul(10), [hre.props.alice, hre.props.bob])
+
+        if (debugMode) await getLiquidity(true, true)
+        if (debugMode) await getLiquidity(false, true)
     })
 
-    it.only("overriding position when burning to the same lower/upper", async function () {
-        const aliceLiquidity = BigNumber.from("20051041647900280328782")
-
-        // Mint a position
+    it.only("Unsetting ticks leads to invalid claims", async function () {
         await validateMint({
             signer: hre.props.alice,
             recipient: hre.props.alice.address,
-            lower: '0',
-            upper: '100',
-            amount: tokenAmount,
+            lower: "-510",
+            upper: "10000",
+            amount: "227",
             zeroForOne: true,
-            balanceInDecrease: BigNumber.from("100000000000000000000"),
-            balanceOutIncrease: BigNumber.from("0"),
-            liquidityIncrease: aliceLiquidity,
+            balanceInDecrease: "227",
+            liquidityIncrease: "541",
+            balanceOutIncrease: "0",
             upperTickCleared: false,
             lowerTickCleared: true,
-            revertMessage: '',
+            revertMessage: "",
         });
 
-        //expect(await getPositionLiquidity(true, hre.props.alice.address, 50, 100)).to.eq(aliceLiquidity)
-    });
+        await validateMint({
+            signer: hre.props.bob,
+            recipient: hre.props.bob.address,
+            lower: "-20",
+            upper: "107510",
+            expectedUpper: "96880",
+            amount: "504",
+            zeroForOne: false,
+            balanceInDecrease: "504",
+            liquidityIncrease: "1",
+            balanceOutIncrease: "226",
+            upperTickCleared: true,
+            lowerTickCleared: false,
+            revertMessage: "",
+        });
 
+        await validateMint({
+            signer: hre.props.bob,
+            recipient: hre.props.bob.address,
+            lower: "120",
+            upper: "510",
+            expectedLower: "320",
+            amount: "847",
+            zeroForOne: true,
+            balanceInDecrease: "847",
+            liquidityIncrease: "90923",
+            balanceOutIncrease: "125",
+            upperTickCleared: false,
+            lowerTickCleared: true,
+            revertMessage: "",
+        });
+
+        // This position should not be allowed to claim & burn a nonzero amount at 320, however they can.
+        // This is because the next tick, the end tick for the position tick 10,000 was unset during a prior swap & cross
+        // Therefore when doing the claims validation the next tick is the max tick which has an epoch of 0.
+        // The solution is to validate the position's end tick epoch in the EpochMap
+        // is not greater than the position's epoch as well.
+        // The solution is included in Claims.sol
+        await validateBurn({
+            signer: hre.props.alice,
+            lower: "-510",
+            upper: "10000",
+            claim: "320",
+            expectedLower: "320",
+            liquidityPercent: BigNumber.from("13516316073012233858115514669384073923"),
+            zeroForOne: true,
+            balanceInIncrease: "22",
+            balanceOutIncrease: "27",
+            lowerTickCleared: true,
+            upperTickCleared: false,
+            revertMessage: "",
+        });
+
+        // The effects of the invalid claim are realized
+        // The swap attempts to transfer out more than the contract has
+        await validateSwap({
+            signer: hre.props.alice,
+            recipient: hre.props.alice.address,
+            zeroForOne: false,
+            amountIn: BigNumber.from("866"),
+            priceLimit: BigNumber.from("34224716871635992872209592711164142668304641091"),
+            balanceInDecrease: "125673700234450647049",
+            balanceOutIncrease: BigNumber.from("125078101542349866597").toString(),
+            revertMessage: "ERC20: transfer amount exceeds balance",
+            exactIn: false,
+        });
+    });
 });
