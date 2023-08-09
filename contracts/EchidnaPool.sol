@@ -31,13 +31,13 @@ contract EchidnaPool {
     event PositionCreated(bool isCreated);
     event liquidityDeltaAfterUndercut(bool zeroForOne, int128 liquidityDeltaBefore, int128 liquidityDeltaAfter);
     
-    LimitPoolFactory public factory;
+    LimitPoolFactory factory;
     address public implementation;
-    LimitPoolManager public manager;
-    LimitPool public pool;
-    Token20 public tokenIn;
-    Token20 public tokenOut;
-    Position[] public positions;
+    LimitPoolManager manager;
+    LimitPool pool;
+    Token20 tokenIn;
+    Token20 tokenOut;
+    Position[] positions;
     int16 tickSpacing;
 
     struct LiquidityDeltaValues {
