@@ -73,26 +73,88 @@ describe('LimitPool Tests', function () {
         await mintSigners20(hre.props.token1, tokenAmountBn.mul(10), [hre.props.alice, hre.props.bob])
     })
 
-    it.only("overriding position when burning to the same lower/upper", async function () {
-        const aliceLiquidity = BigNumber.from("20051041647900280328782")
-
-        // Mint a position
+    it.only("Shared TickMap leads to ticks errantly unset", async function () {
         await validateMint({
             signer: hre.props.alice,
             recipient: hre.props.alice.address,
-            lower: '0',
-            upper: '100',
-            amount: tokenAmount,
+            lower: "-510",
+            upper: "10000",
+            amount: "227",
             zeroForOne: true,
-            balanceInDecrease: BigNumber.from("100000000000000000000"),
-            balanceOutIncrease: BigNumber.from("0"),
-            liquidityIncrease: aliceLiquidity,
+            balanceInDecrease: "227",
+            liquidityIncrease: "541",
+            balanceOutIncrease: "0",
             upperTickCleared: false,
             lowerTickCleared: true,
-            revertMessage: '',
+            revertMessage: "",
         });
 
-        //expect(await getPositionLiquidity(true, hre.props.alice.address, 50, 100)).to.eq(aliceLiquidity)
+        await validateMint({
+            signer: hre.props.bob,
+            recipient: hre.props.bob.address,
+            lower: "10",
+            upper: "107500",
+            expectedUpper: "93720",
+            amount: "10000000000000000",
+            zeroForOne: false,
+            balanceInDecrease: "10000000000000000",
+            liquidityIncrease: "93116165100287",
+            balanceOutIncrease: "226",
+            upperTickCleared: true,
+            lowerTickCleared: false,
+            revertMessage: "",
+        });
+
+        await validateMint({
+            signer: hre.props.bob,
+            recipient: hre.props.bob.address,
+            lower: "-510",
+            upper: "10000",
+            amount: "227",
+            zeroForOne: false,
+            balanceInDecrease: "227",
+            liquidityIncrease: "336",
+            balanceOutIncrease: "0",
+            upperTickCleared: false,
+            lowerTickCleared: true,
+            revertMessage: "",
+        });
+
+        // When we do this zeroForOne burn we check if ticks0 has any liquidityDelta on tick 10,000
+        // before we clear it. There is 0 liquidityDelta on ticks0 tick 10,000, so it is cleared.
+        // However, there is nonzero liquidityDelta on tick 10,000 in ticks1 -- this liquidityDelta needs to be applied
+        // upon crossing during a swap, however tick 10,000 can never be the cross tick as it is no longer set
+        // in the TickMap.
+        await validateBurn({
+            signer: hre.props.alice,
+            lower: "-510",
+            upper: "10000",
+            claim: "10000",
+            liquidityPercent: BigNumber.from("3619953732483784731740789722613948214"),
+            zeroForOne: true,
+            balanceInIncrease: "364",
+            positionLiquidityChange: "541",
+            balanceOutIncrease: "0",
+            lowerTickCleared: true,
+            upperTickCleared: true,
+            revertMessage: "",
+        });
+
+        // When we do a swap we never cross tick 10,000 as it was unset in the TickMap.
+        // Leading to liquidity never getting kicked in and the accounting system becoming invalidated.
+        await validateSwap({
+            signer: hre.props.alice,
+            recipient: hre.props.alice.address,
+            zeroForOne: true,
+            amountIn: BigNumber.from("340282366920938463463374607431768211452"),
+            priceLimit: BigNumber.from("12"),
+            balanceInDecrease: "125673700234450647049",
+            balanceOutIncrease: BigNumber.from("125078101542349866597").toString(),
+            revertMessage: "reverted with panic code 0x11 (Arithmetic operation underflowed or overflowed outside of an unchecked block)",
+        });
+
+        // The resolution ought to be to adopt two TickMaps & EpochMaps to both solve this and
+        // avoid any potential logical errors related to sharing a TickMap & EpochMap in the future.
     });
 
 });
