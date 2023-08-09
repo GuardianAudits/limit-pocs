@@ -32,7 +32,7 @@ contract EchidnaPool {
     event liquidityDeltaAfterUndercut(bool zeroForOne, int128 liquidityDeltaBefore, int128 liquidityDeltaAfter);
     
     LimitPoolFactory factory;
-    address public implementation;
+    address implementation;
     LimitPoolManager manager;
     LimitPool pool;
     Token20 tokenIn;
