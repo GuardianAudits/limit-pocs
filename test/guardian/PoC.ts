@@ -73,26 +73,98 @@ describe('LimitPool Tests', function () {
         await mintSigners20(hre.props.token1, tokenAmountBn.mul(10), [hre.props.alice, hre.props.bob])
     })
 
-    it.only("overriding position when burning to the same lower/upper", async function () {
-        const aliceLiquidity = BigNumber.from("20051041647900280328782")
+    it.only("Position.remove entered when position is crossed into", async function () {
+        
+        await validateMint({
+          signer: hre.props.bob,
+          recipient: hre.props.bob.address,
+          lower: "0",
+          upper: "100",
+          amount: tokenAmountBn,
+          zeroForOne: true,
+          balanceInDecrease: tokenAmountBn,
+          liquidityIncrease: "20051041647900280328782",
+          balanceOutIncrease: "0",
+          upperTickCleared: false,
+          lowerTickCleared: true,
+          revertMessage: "",
+        });
+        console.log("MINT #1 Completed");
+        console.log()
 
-        // Mint a position
+        // This mint does not undercut
+        await validateMint({
+            signer: hre.props.bob,
+            recipient: hre.props.bob.address,
+            lower: "10",
+            upper: "100",
+            amount: tokenAmountBn,
+            zeroForOne: true,
+            balanceInDecrease: tokenAmountBn,
+            liquidityIncrease: "22284509725894501570567",
+            balanceOutIncrease: "0",
+            upperTickCleared: false,
+            lowerTickCleared: false,
+            revertMessage: "",
+          });
+        console.log("MINT #2 Completed");
+        console.log()
+
+        await validateBurn({
+            signer: hre.props.bob,
+            lower: "0",
+            upper: "100",
+            claim: "0",
+            liquidityPercent: ethers.utils.parseUnits('1', 38),
+            zeroForOne: true,
+            balanceInIncrease: "0",
+            balanceOutIncrease: "99999999999999999999",
+            lowerTickCleared: true,
+            upperTickCleared: false,
+            revertMessage: "",
+        });
+        console.log("BURN #1 Completed");
+        console.log()
+
+        await getTickAtPrice(true, true)
+        await getTickAtPrice(false, true)
+
         await validateMint({
             signer: hre.props.alice,
             recipient: hre.props.alice.address,
-            lower: '0',
-            upper: '100',
-            amount: tokenAmount,
-            zeroForOne: true,
-            balanceInDecrease: BigNumber.from("100000000000000000000"),
-            balanceOutIncrease: BigNumber.from("0"),
-            liquidityIncrease: aliceLiquidity,
-            upperTickCleared: false,
-            lowerTickCleared: true,
-            revertMessage: '',
-        });
+            lower: "10",
+            upper: "100",
+            amount: tokenAmountBn,
+            zeroForOne: false,
+            balanceInDecrease: tokenAmountBn,
+            liquidityIncrease: "24854339507101858495720",
+            balanceOutIncrease: "50056247163960588354",
+            upperTickCleared: true,
+            lowerTickCleared: false,
+            revertMessage: "",
+          });
+        console.log("MINT #3 Completed");
+        console.log()
+        await getTickAtPrice(true, true)
+        await getTickAtPrice(false, true)
 
-        //expect(await getPositionLiquidity(true, hre.props.alice.address, 50, 100)).to.eq(aliceLiquidity)
-    });
+       // Claim tick 10 is allowed which causes entry into Positions.remove although position has been partially filled
+       // by Mint #3
+        await validateBurn({
+            signer: hre.props.bob,
+            lower: "10",
+            upper: "100",
+            claim: "10",
+            liquidityPercent: ethers.utils.parseUnits('1', 38),
+            zeroForOne: true,
+            balanceInIncrease: "0",
+            balanceOutIncrease: "99999999999999999999",
+            lowerTickCleared: false,
+            upperTickCleared: false,
+            revertMessage: "reverted with reason string 'ERC20: transfer amount exceeds balance'",
+        });
+        console.log("BURN #2 Completed");
+
+      });
 
 });

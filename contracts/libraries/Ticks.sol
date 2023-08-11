@@ -458,7 +458,9 @@ library Ticks {
                     tickAhead  = TickMap.previous(tickMap, params.lower, cache.constants.tickSpacing, false);
                 }
                 uint32 epochAhead = EpochMap.get(tickAhead, tickMap, cache.constants);
+                console.log("TICK 10 EPOCH BEFORE:", EpochMap.get(10, tickMap, cache.constants));
                 EpochMap.set(params.lower, epochAhead, tickMap, cache.constants);
+                console.log("TICK 10 EPOCH AFTER:", EpochMap.get(10, tickMap, cache.constants));
             }
             ILimitPoolStructs.Tick memory tickLower = ticks[params.lower];
             if (params.zeroForOne) {
