@@ -129,6 +129,8 @@ describe('LimitPool Tests', function () {
         await getTickAtPrice(true, true)
         await getTickAtPrice(false, true)
 
+        // This mint sets the epoch on tick 10 to epoch 0.
+        // Sadly, Bob's position on the other side needs tick 10 to have the right epoch!
         await validateMint({
             signer: hre.props.alice,
             recipient: hre.props.alice.address,
