@@ -33,6 +33,7 @@ contract LimitPool is
     event SimulateMint(bytes b);
     event SimulateMint(bytes4 b);
     event SimulateMint(bool b);
+    event Debug(int24 lower, int24 upper, bool positionCreated);
 
     modifier ownerOnly() {
         _onlyOwner();
@@ -164,10 +165,11 @@ contract LimitPool is
             assembly {
                 sig := mload(add(data, 0x20))
             }
-            
+            emit SimulateMint(sig);
             // SimulateMint error
             if (sig == hex"5cc1f67b") {
                 (, lower, upper, positionCreated) = abi.decode(abi.encodePacked(bytes28(0), data),(bytes32,int24,int24,bool));
+                emit Debug(params.lower, params.upper, positionCreated);
             }
             else {
                 lower = -8388608;
@@ -224,6 +226,7 @@ contract LimitPool is
                 sig := mload(add(data, 0x20))
             }
             // SimulateBurn error
+            emit SimulateMint(sig);
             if (sig == hex"97dd6e0a") {
                 (, lower, upper, positionExists) = abi.decode(abi.encodePacked(bytes28(0), data),(bytes32,int24,int24,bool));
             }

@@ -249,6 +249,7 @@ library MintLimitCall {
                 params
             );
 
+            positionCreated = true;
             // save position to storage
             positions[params.to][params.lower][params.upper] = cache.position;
 
@@ -268,7 +269,7 @@ library MintLimitCall {
 
         // save lp side for safe reentrancy
         save(cache, globalState, params.zeroForOne);
-    
+
         revert SimulateMint(params.lower, params.upper, positionCreated);
     }
 

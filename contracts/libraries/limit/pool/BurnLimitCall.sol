@@ -9,6 +9,10 @@ library BurnLimitCall {
 
     error SimulateBurn(int24 lower, int24 upper, bool positionExists);
 
+    event DebugSimBurn(int24 lower, int24 upper, bool positionExists);
+    event EpochSim(uint32 e);
+    event EpochReal(uint32 e);
+
     event BurnLimit(
         address indexed to,
         int24 lower,
@@ -29,6 +33,10 @@ library BurnLimitCall {
             storage positions
     ) internal returns (ILimitPoolStructs.BurnLimitCache memory) {
         if (params.lower >= params.upper) require (false, 'InvalidPositionBounds()');
+        emit EpochReal(cache.position.epochLast);
+        emit DebugSimBurn(params.lower, params.upper, cache.position.epochLast != 0);
+        // SOMEHOW THE SIM BURN IS DIFFERENT THAN REAL BURN???
+        assert(false);
         if (cache.position.epochLast == 0) require(false, 'PositionNotFound()');
         if (cache.position.crossedInto
             || params.claim != (params.zeroForOne ? params.lower : params.upper)
@@ -97,6 +105,7 @@ library BurnLimitCall {
             storage positions
     ) external {
         if (params.lower >= params.upper) require (false, 'InvalidPositionBounds()');
+        emit EpochSim(cache.position.epochLast);
         if (cache.position.epochLast == 0) require(false, 'PositionNotFound()');
         if (cache.position.crossedInto
             || params.claim != (params.zeroForOne ? params.lower : params.upper)
@@ -114,7 +123,7 @@ library BurnLimitCall {
                 tickMap,
                 cache.state,
                 ILimitPoolStructs.UpdateLimitParams(
-                    msg.sender,
+                    params.to,
                     params.to,
                     params.burnPercent,
                     params.lower,
@@ -124,6 +133,7 @@ library BurnLimitCall {
                 ),
                 cache.constants
             );
+            emit EpochSim(cache.position.epochLast);
         } else {
             // position has not been crossed into
             (cache.state, cache.position) = PositionsLimit.remove(
@@ -132,7 +142,7 @@ library BurnLimitCall {
                 tickMap,
                 cache.state,
                 ILimitPoolStructs.UpdateLimitParams(
-                    msg.sender,
+                    params.to,
                     params.to,
                     params.burnPercent,
                     params.lower,
@@ -149,7 +159,7 @@ library BurnLimitCall {
         );
 
         bool positionExists = cache.position.epochLast != 0;
-
+        emit DebugSimBurn(params.lower, params.upper, positionExists);
         if ((params.zeroForOne ? params.claim != params.upper
                                : params.claim != params.lower)) {
             params.zeroForOne

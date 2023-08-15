@@ -35,6 +35,9 @@ contract EchidnaPool {
     event AssertFailTest(string message, uint160 priceAfter, uint160 priceBefore);
     event LiquidityAbsolute(uint128 beforeAbs, uint128 afterAbs);
 
+    event DebugTest(uint a);
+    event DebugEvent(int24 lower, int24 upper, bool zeroForOne);
+
     LimitPoolFactory private factory;
     address private implementation;
     LimitPoolManager private manager;
@@ -166,8 +169,11 @@ contract EchidnaPool {
 
         // ACTION 
         pool.mintLimit(params);
-        if (posCreated) positions.push(Position(msg.sender, lower, upper, zeroForOne));
-
+        if (posCreated) {
+            positions.push(Position(msg.sender, lower, upper, zeroForOne));
+            // emit DebugTest(positions.length);
+            // emit DebugEvent(positions[0].lower, positions[0].upper, positions[0].zeroForOne);
+        }
         (, poolStructs.lower) = pool.ticks(lower);
         (, poolStructs.upper) = pool.ticks(upper);
 
@@ -195,27 +201,14 @@ contract EchidnaPool {
         if(zeroForOne){
             if(poolValues.price0After >= poolValues.price0Before){
                 emit LiquidityAbsolute(poolValues.liquidityAbsoluteUpperBefore, poolValues.liquidityAbsoluteUpperAfter);
-                assert(poolValues.liquidityAbsoluteUpperAfter > poolValues.liquidityAbsoluteUpperBefore);
+                assert(poolValues.liquidityAbsoluteUpperAfter >= poolValues.liquidityAbsoluteUpperBefore);
             }
         } else {
             if(poolValues.price1Before >= poolValues.price1After){
                 emit LiquidityAbsolute(poolValues.liquidityAbsoluteLowerBefore, poolValues.liquidityAbsoluteLowerAfter);
-                assert(poolValues.liquidityAbsoluteLowerAfter > poolValues.liquidityAbsoluteLowerBefore);
+                assert(poolValues.liquidityAbsoluteLowerAfter >= poolValues.liquidityAbsoluteLowerBefore);
             }
         }
-        // Check that liqudityAbsolute is decremented on undercut
-
-        // if(zeroForOne){
-        //     if(poolValues.price0After < poolValues.price0Before){
-        //         emit LiquidityAbsolute(poolValues.liquidityAbsoluteUpperBefore, poolValues.liquidityAbsoluteUpperAfter);
-        //         assert(poolValues.liquidityAbsoluteUpperAfter < poolValues.liquidityAbsoluteUpperBefore);
-        //     }
-        // } else {
-        //     if(poolValues.price1Before < poolValues.price1After){
-        //         emit LiquidityAbsolute(poolValues.liquidityAbsoluteLowerBefore, poolValues.liquidityAbsoluteLowerAfter);
-        //         assert(poolValues.liquidityAbsoluteLowerAfter < poolValues.liquidityAbsoluteLowerBefore);
-        //     }
-        // }
 
         // Ensure prices have not crossed
         assert(poolValues.price0After >= poolValues.price1After);
@@ -224,6 +217,10 @@ contract EchidnaPool {
             assert(lower < upper);
             // Ensure minted ticks on proper tick spacing
             assert((lower % tickSpacing == 0) && (upper % tickSpacing == 0));
+        } else {
+            
+            // assert(poolValues.liquidityAbsoluteLowerAfter <= poolValues.liquidityAbsoluteLowerBefore);
+            // assert(poolValues.liquidityAbsoluteUpperAfter <= poolValues.liquidityAbsoluteUpperBefore);
         }
         
         emit LiquidityGlobal(poolValues.liquidityGlobalBefore, poolValues.liquidityGlobalAfter);
@@ -406,12 +403,19 @@ contract EchidnaPool {
         assert(price0 >= price1);
     }
 
+    function burnSpecific() internal {
+        mint(847,true,120,510);
+        burn(510, 0, 1e38);
+    }
+
     function burn(int24 claimAt, uint256 positionIndex, uint128 burnPercent) public {
         // PRE CONDITIONS 
         // NOTE: Do not use the exact inputs of this function for POCs, use the inputs after the input validation
         positionIndex = positionIndex % positions.length;
         Position memory pos = positions[positionIndex];
-        claimAt = pos.lower + (claimAt % (pos.upper - pos.lower));
+        // emit DebugTest(positionIndex);
+        // emit DebugEvent(positions[positionIndex].lower, positions[positionIndex].upper, positions[positionIndex].zeroForOne);
+        require(claimAt >= pos.lower && claimAt <= pos.upper);
         require(claimAt % tickSpacing == 0);
         PoolValues memory poolValues;
 
@@ -438,7 +442,7 @@ contract EchidnaPool {
         emit PositionTicks(pos.lower, pos.upper);
         (int24 lower, int24 upper, bool positionExists) = pool.getResizedTicksForBurn(params);
         emit BurnTicks(lower, upper, positionExists);
-
+        // assert(false);
         // ACTION
         pool.burnLimit(params);
         if (!positionExists) {

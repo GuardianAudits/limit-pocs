@@ -14,6 +14,8 @@ import '../Ticks.sol';
 /// @notice Position management library for ranged liquidity.
 library PositionsLimit {
     using SafeCast for uint256;
+    event EpochSim(uint32 e);
+    event LiquidityAmount(uint128 amount);
 
     event BurnLimit(
         address indexed to,
@@ -409,6 +411,8 @@ library PositionsLimit {
                 params,
                 constants
             );
+            emit LiquidityAmount(params.amount);
+            emit LiquidityAmount(cache.position.liquidity);
             // update position liquidity
             cache.position.liquidity -= uint128(params.amount);
             // update global liquidity
@@ -439,8 +443,10 @@ library PositionsLimit {
         }
         // clear position if empty
         if (cache.position.liquidity == 0) {
+            emit EpochSim(cache.position.epochLast);
             cache.position.epochLast = 0;
             cache.position.crossedInto = false;
+            emit EpochSim(cache.position.epochLast);
         }
 
         // round back claim tick for storage
