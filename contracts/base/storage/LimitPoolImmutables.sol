@@ -16,15 +16,27 @@ contract LimitPoolImmutables is Clone {
         return _getArgAddress(40);
     }
 
-    function minPrice() public pure returns (uint160) {
-        return _getArgUint160(60);
+    function poolToken() public pure returns (address) {
+        return _getArgAddress(60);
     }
 
-    function maxPrice() public pure returns (uint160) {
+    function minPrice() public pure returns (uint160) {
         return _getArgUint160(80);
     }
 
+    function maxPrice() public pure returns (uint160) {
+        return _getArgUint160(100);
+    }
+
+    function genesisTime() public pure returns (uint32) {
+        return _getArgUint32(120);
+    }
+
     function tickSpacing() public pure returns (int16) {
-        return int16(_getArgUint16(100));
+        return int16(_getArgUint16(124));
+    }
+
+    function swapFee() public pure returns (uint16) {
+        return _getArgUint16(126);
     }
 }

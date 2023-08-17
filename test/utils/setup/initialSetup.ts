@@ -2,15 +2,15 @@ import { SUPPORTED_NETWORKS } from '../../../scripts/constants/supportedNetworks
 import { DeployAssist } from '../../../scripts/util/deployAssist'
 import { ContractDeploymentsKeys } from '../../../scripts/util/files/contractDeploymentKeys'
 import { ContractDeploymentsJson } from '../../../scripts/util/files/contractDeploymentsJson'
-import { LimitPool__factory, QuoteCall__factory } from '../../../typechain'
-import { BurnCall__factory } from '../../../typechain'
+import { BurnLimitCall__factory, LimitPool__factory, MintLimitCall__factory, LimitPositions__factory, QuoteCall__factory, RangePoolERC1155__factory, LimitTicks__factory } from '../../../typechain'
+import { BurnRangeCall__factory } from '../../../typechain'
 import { SwapCall__factory } from '../../../typechain'
-import { MintCall__factory } from '../../../typechain'
+import { MintRangeCall__factory } from '../../../typechain'
 import {
     Token20__factory,
     LimitPoolFactory__factory,
     Ticks__factory,
-    Positions__factory,
+    RangePositions__factory,
     LimitPoolManager__factory,
     TickMap__factory,
     PoolRouter__factory
@@ -111,6 +111,7 @@ export class InitialSetup {
         // const signature = keccak256(encodedData);
         // console.log('encoded data:', signature);
 
+        // shared
         await this.deployAssist.deployContractWithRetry(
             network,
             // @ts-ignore
@@ -127,11 +128,22 @@ export class InitialSetup {
             [],
         )
 
+        // range
         await this.deployAssist.deployContractWithRetry(
             network,
             // @ts-ignore
-            Positions__factory,
-            'positionsLib',
+            RangePositions__factory,
+            'rangePositionsLib',
+            [],
+        )
+
+
+        // limit
+        await this.deployAssist.deployContractWithRetry(
+            network,
+            // @ts-ignore
+            LimitPositions__factory,
+            'limitPositionsLib',
             [],
         )
 
@@ -158,22 +170,44 @@ export class InitialSetup {
             // @ts-ignore
             SwapCall__factory,
             'swapCall',
+            [],
+            {
+                'contracts/libraries/Ticks.sol:Ticks': hre.props.ticksLib.address,
+            }
+        )
+
+        await this.deployAssist.deployContractWithRetry(
+            network,
+            // @ts-ignore
+            MintRangeCall__factory,
+            'mintRangeCall',
             []
         )
 
         await this.deployAssist.deployContractWithRetry(
             network,
             // @ts-ignore
-            MintCall__factory,
-            'mintCall',
-            [],
+            BurnRangeCall__factory,
+            'burnRangeCall',
+            []
         )
 
         await this.deployAssist.deployContractWithRetry(
             network,
             // @ts-ignore
-            BurnCall__factory,
-            'burnCall',
+            MintLimitCall__factory,
+            'mintLimitCall',
+            [],
+            {
+                'contracts/libraries/Ticks.sol:Ticks': hre.props.ticksLib.address,
+            }
+        )
+
+        await this.deployAssist.deployContractWithRetry(
+            network,
+            // @ts-ignore
+            BurnLimitCall__factory,
+            'burnLimitCall',
             []
         )
 
@@ -194,18 +228,31 @@ export class InitialSetup {
                 hre.props.limitPoolFactory.address
             ],
             {
-                'contracts/libraries/Positions.sol:Positions': hre.props.positionsLib.address,
+                'contracts/libraries/limit/LimitPositions.sol:LimitPositions': hre.props.limitPositionsLib.address,
                 'contracts/libraries/Ticks.sol:Ticks': hre.props.ticksLib.address,
-                'contracts/libraries/pool/MintCall.sol:MintCall': hre.props.mintCall.address,
-                'contracts/libraries/pool/BurnCall.sol:BurnCall': hre.props.burnCall.address,
+                'contracts/libraries/range/pool/MintRangeCall.sol:MintRangeCall': hre.props.mintRangeCall.address,
+                'contracts/libraries/range/pool/BurnRangeCall.sol:BurnRangeCall': hre.props.burnRangeCall.address,
+                'contracts/libraries/limit/pool/MintLimitCall.sol:MintLimitCall': hre.props.mintLimitCall.address,
+                'contracts/libraries/limit/pool/BurnLimitCall.sol:BurnLimitCall': hre.props.burnLimitCall.address,
                 'contracts/libraries/pool/SwapCall.sol:SwapCall': hre.props.swapCall.address,
                 'contracts/libraries/pool/QuoteCall.sol:QuoteCall': hre.props.quoteCall.address
             }
         )
 
+        await this.deployAssist.deployContractWithRetry(
+            network,
+            // @ts-ignore
+            RangePoolERC1155__factory,
+            'rangePoolERC1155',
+            [
+              hre.props.limitPoolFactory.address
+            ]
+        )
+
         const enableImplTxn = await hre.props.limitPoolManager.enableImplementation(
             this.constantProductString,
-            hre.props.limitPoolImpl.address
+            hre.props.limitPoolImpl.address,
+            hre.props.rangePoolERC1155.address
         )
         await enableImplTxn.wait();
 
@@ -234,20 +281,22 @@ export class InitialSetup {
             this.constantProductString,
             hre.props.token0.address,
             hre.props.token1.address,
-            '10',
-            '79228162514264337593543950336'
+            '500',
+            '177159557114295710296101716160'
         )
         await createPoolTxn.wait()
 
         hre.nonce += 1
 
-        let limitPoolAddress = await hre.props.limitPoolFactory.getLimitPool(
+        let limitPoolAddress; let limitPoolTokenAddress;
+        [limitPoolAddress, limitPoolTokenAddress] = await hre.props.limitPoolFactory.getLimitPool(
             this.constantProductString,
             hre.props.token0.address,
             hre.props.token1.address,
-            '10'
+            '500'
         )
         hre.props.limitPool = await hre.ethers.getContractAt('LimitPool', limitPoolAddress)
+        hre.props.limitPoolToken = await hre.ethers.getContractAt('RangePoolERC1155', limitPoolTokenAddress)
 
         await this.deployAssist.saveContractDeployment(
             network,
@@ -258,7 +307,7 @@ export class InitialSetup {
                 this.constantProductString,
                 hre.props.token0.address,
                 hre.props.token1.address,
-                '10'
+                '500'
             ]
         )
 
