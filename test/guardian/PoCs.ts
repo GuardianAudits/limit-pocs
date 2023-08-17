@@ -235,7 +235,7 @@ describe('RangePool Exact In Tests', function () {
 
         console.log("COMPLETED SWAP 11");
 
-        await validateMint({ // Attacker mints position 
+        await validateMint({ // Attacker mints position
             signer: hre.props.bob,
             recipient: hre.props.bob.address,
             lower: '-800000',
@@ -260,5 +260,4 @@ describe('RangePool Exact In Tests', function () {
 
         console.log("COMPLETED BURN");
     })
-
 })
