@@ -211,7 +211,7 @@ contract EchidnaPool {
         // Ensure liquidityGlobal is incremented after mint
         assert(poolValues.liquidityGlobalAfter >= poolValues.liquidityGlobalBefore);
         
-        // Ensure pool liquidity is non-zero after mint with no undercuts
+        // Ensure pool liquidity is non-zero after mint with undercut
         if (zeroForOne) {
             if (poolValues.price0After < poolValues.price0Before) assert(poolValues.liquidity0After > 0);
         }
@@ -327,7 +327,7 @@ contract EchidnaPool {
         // Ensure liquidityGlobal is incremented after mint
         assert(poolValues.liquidityGlobalAfter >= poolValues.liquidityGlobalBefore);
 
-        // Ensure pool liquidity is non-zero after mint with no undercuts
+        // Ensure pool liquidity is non-zero after mint with undercut
         if (zeroForOne) {
             if (poolValues.price0After < poolValues.price0Before) assert(poolValues.liquidity0After > 0);
         }
@@ -478,7 +478,6 @@ contract EchidnaPool {
         PoolValues memory poolValues;
         (,PoolsharkStructs.LimitPoolState memory pool0, PoolsharkStructs.LimitPoolState memory pool1, uint128 liquidityGlobalBefore,,) = pool.globalState();
 
-        LiquidityDeltaValues memory values;
         (, PoolsharkStructs.LimitTick memory lowerTick) = pool.ticks(lower);
         (, PoolsharkStructs.LimitTick memory upperTick) = pool.ticks(upper);
 
@@ -495,8 +494,6 @@ contract EchidnaPool {
         (, lowerTick) = pool.ticks(lower);
         (, upperTick) = pool.ticks(upper);
 
-        values.liquidityDeltaLowerAfter = lowerTick.liquidityDelta;
-        values.liquidityDeltaUpperAfter = upperTick.liquidityDelta;
         poolValues.liquidityAbsoluteLowerAfter = lowerTick.liquidityAbsolute;
         poolValues.liquidityAbsoluteUpperAfter = upperTick.liquidityAbsolute;
         
@@ -521,7 +518,6 @@ contract EchidnaPool {
         PoolValues memory poolValues;
         (,PoolsharkStructs.LimitPoolState memory pool0, PoolsharkStructs.LimitPoolState memory pool1, uint128 liquidityGlobalBefore,,) = pool.globalState();
 
-        LiquidityDeltaValues memory values;
         (, PoolsharkStructs.LimitTick memory lowerTick) = pool.ticks(lower);
         (, PoolsharkStructs.LimitTick memory upperTick) = pool.ticks(upper);
 
@@ -537,8 +533,6 @@ contract EchidnaPool {
         (, lowerTick) = pool.ticks(lower);
         (, upperTick) = pool.ticks(upper);
 
-        values.liquidityDeltaLowerAfter = lowerTick.liquidityDelta;
-        values.liquidityDeltaUpperAfter = upperTick.liquidityDelta;
         poolValues.liquidityAbsoluteLowerAfter = lowerTick.liquidityAbsolute;
         poolValues.liquidityAbsoluteUpperAfter = upperTick.liquidityAbsolute;
 
@@ -565,7 +559,6 @@ contract EchidnaPool {
         PoolValues memory poolValues;
         (,PoolsharkStructs.LimitPoolState memory pool0, PoolsharkStructs.LimitPoolState memory pool1, uint128 liquidityGlobalBefore,,) = pool.globalState();
 
-        LiquidityDeltaValues memory values;
         (, PoolsharkStructs.LimitTick memory lowerTick) = pool.ticks(lower);
         (, PoolsharkStructs.LimitTick memory upperTick) = pool.ticks(upper);
 
@@ -583,8 +576,6 @@ contract EchidnaPool {
         (, lowerTick) = pool.ticks(lower);
         (, upperTick) = pool.ticks(upper);
 
-        values.liquidityDeltaLowerAfter = lowerTick.liquidityDelta;
-        values.liquidityDeltaUpperAfter = upperTick.liquidityDelta;
         poolValues.liquidityAbsoluteLowerAfter = lowerTick.liquidityAbsolute;
         poolValues.liquidityAbsoluteUpperAfter = upperTick.liquidityAbsolute;
 
@@ -610,7 +601,6 @@ contract EchidnaPool {
         PoolValues memory poolValues;
         (,PoolsharkStructs.LimitPoolState memory pool0, PoolsharkStructs.LimitPoolState memory pool1, uint128 liquidityGlobalBefore,,) = pool.globalState();
 
-        LiquidityDeltaValues memory values;
         (, PoolsharkStructs.LimitTick memory lowerTick) = pool.ticks(lower);
         (, PoolsharkStructs.LimitTick memory upperTick) = pool.ticks(upper);
 
@@ -628,8 +618,6 @@ contract EchidnaPool {
         (, lowerTick) = pool.ticks(lower);
         (, upperTick) = pool.ticks(upper);
 
-        values.liquidityDeltaLowerAfter = lowerTick.liquidityDelta;
-        values.liquidityDeltaUpperAfter = upperTick.liquidityDelta;
         poolValues.liquidityAbsoluteLowerAfter = lowerTick.liquidityAbsolute;
         poolValues.liquidityAbsoluteUpperAfter = upperTick.liquidityAbsolute;
 
